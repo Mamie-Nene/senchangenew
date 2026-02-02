@@ -1,0 +1,5 @@
+flutter_native_splash:
+  image: assets/images/icons/senchange.png
+  color: "#744C64"
+  android: true
+  ios: true
