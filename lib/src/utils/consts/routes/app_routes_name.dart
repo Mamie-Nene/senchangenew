@@ -74,5 +74,9 @@ class AppRoutesName{
 
   static const String blankPage = '/blankPage';
 
+  // new
+  static const String transactiionOperationPage = '/transactiionOperationPage';
+  static const String detailTransactionPage = '/detailTransactionPage';
+
 
 }

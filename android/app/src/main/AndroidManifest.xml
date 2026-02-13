@@ -18,7 +18,7 @@
 
     </queries>
     <application
-        android:label="senchange"
+        android:label="newsenchange"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true"

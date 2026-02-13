@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_http.dart';
-import 'package:senchange/src/data/remote/auth/auth_api.dart';
+import '/src/data/remote/auth/auth_api.dart';
 
 import '/src/methods/logout_methods.dart';
 import '/src/methods/storage_management.dart';

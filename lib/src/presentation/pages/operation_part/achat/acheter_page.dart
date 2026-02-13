@@ -4,8 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http/intercepted_http.dart';
 import 'package:pinput/pinput.dart';
-import 'package:senchange/src/domain/WalletEntity.dart';
-import 'package:senchange/src/presentation/widgets/transaction_detail_widgets.dart';
+import '/src/domain/WalletEntity.dart';
+import '/src/presentation/widgets/transaction_detail_widgets.dart';
 
 
 import '../../../widgets/transaction_detail_widgets.dart';

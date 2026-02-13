@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
-import 'package:senchange/src/methods/response_messages.dart';
+import '/src/methods/response_messages.dart';
 
 import '/src/data/local/transaction_steps.dart';
 import '/src/data/remote/transaction/operation_api.dart';
@@ -59,7 +59,7 @@ class _VendreScreenState extends State<VendreScreen> {
 
   }
 
-  // fonction pour recupérer le numero de wallet de senchange suivant le type de blockchain
+  // fonction pour recupérer le numero de wallet de newsenchange suivant le type de blockchain
   getSenchangeWallet(String typeBlockchain,BuildContext context) async {
     await OperationApi().getSenchangeWallet(typeBlockchain,context).then(
             (value) {

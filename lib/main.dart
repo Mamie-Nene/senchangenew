@@ -27,7 +27,7 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-
+//mnba@gainde2000.sn PalaPala9.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
 
     return Builder(
       builder: (context) {
-       StompService().init(context);  // initialise une seule fois
+      // StompService().init(context);  // initialise une seule fois
         return MaterialApp(
             navigatorObservers: [routeObserver],
             title: 'Senchange',

@@ -15,7 +15,7 @@ class Constants {
   static RegExp passwordRegExp = RegExp(passwordPattern);
 
 
-  static const String appNameForHeaders= "mobile-senchange";
+  static const String appNameForHeaders= "mobile-newsenchange";
   static const String whatsapppSupportNumber = "+221781881785";
 
   static const String whatsappSupportMsg = "Salut, j’utilise votre application Senchange et j’aurais besoin d’échanger avec le support. Merci !";

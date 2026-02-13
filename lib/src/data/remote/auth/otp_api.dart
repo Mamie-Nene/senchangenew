@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http/intercepted_http.dart';
-import 'package:senchange/src/services/secure_storage_service.dart';
+import '/src/services/secure_storage_service.dart';
 
 import '../../../../Src/utils/consts/constants.dart';
 import '../../../utils/consts/app_specifications/allDirectories.dart';

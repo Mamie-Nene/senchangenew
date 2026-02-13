@@ -1,4 +1,6 @@
-import 'package:senchange/src/methods/storage_management.dart';
+import 'package:senchange/src/utils/api/api_url.dart';
+
+import '/src/methods/storage_management.dart';
 
 class HttpHeadersGlobalVariable {
 
@@ -13,7 +15,8 @@ class HttpHeadersGlobalVariable {
 
     return {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
+    //  'Authorization': 'Bearer $token',
+      "apikey": ApiUrl.apiKey,
     };
   }
 

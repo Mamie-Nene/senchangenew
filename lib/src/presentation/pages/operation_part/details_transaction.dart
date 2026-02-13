@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:senchange/src/methods/response_messages.dart';
+import '/src/methods/response_messages.dart';
 
 import '/src/domain/TransactionEntity.dart';
 

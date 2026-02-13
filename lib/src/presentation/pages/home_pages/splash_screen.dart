@@ -20,11 +20,11 @@ class _SplashscreenState extends State<Splashscreen> {
 
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      if (widget.isFirstTime) {
+     /* if (widget.isFirstTime) {
         Navigator.pushReplacementNamed(context, AppRoutesName.introductionPage);
-      } else {
+      } else {*/
         CheckStatusMethods.checkLoginStatus(context);
-      }
+     // }
     });
 
   }

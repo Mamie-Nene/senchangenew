@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
-import 'package:senchange/src/services/secure_storage_service.dart';
+import '/src/services/secure_storage_service.dart';
 
 import '/src/methods/response_messages.dart';
 import '/src/services/utils.service.dart';

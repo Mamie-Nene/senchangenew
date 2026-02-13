@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:senchange/src/utils/consts/app_specifications/allDirectories.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class ProcessTimeline extends StatefulWidget {

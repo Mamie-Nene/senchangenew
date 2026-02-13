@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:senchange/src/services/secure_storage_service.dart';
+import '/src/services/secure_storage_service.dart';
 import '/src/utils/consts/routes/app_routes_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/src/utils/variable/global_variable.dart';

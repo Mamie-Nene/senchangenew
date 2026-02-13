@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/src/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/intercepted_http.dart';
-import 'package:senchange/src/utils/variable/http_headers_global_variable.dart';
+import '/src/utils/variable/http_headers_global_variable.dart';
 
 import '/src/domain/UserEntity.dart';
 
@@ -24,7 +24,57 @@ import '/src/utils/api/api_url.dart';
 class AuthApi{
 
 
-  Future<void> loginRequest(BuildContext context,String emailOrUsername, String password) async {
+ loginRequest(BuildContext context,String emailOrUsername, String password) async {
+
+    final url = Uri.parse(ApiUrl().loginUrl);
+
+    // get device info
+    final info = await UtilsService.getDeviceInfo();
+
+    final headers = {
+      'Content-Type': 'application/json',
+     "apikey": ApiUrl.apiKey,
+     // '"x-api-key": dotenv.env['API_KEY']!,
+
+    };
+
+
+    final body = jsonEncode({
+      "email": emailOrUsername,
+      "password": password,
+    });
+
+    try {
+
+      final response = await http.post(url, headers: headers, body: body);
+
+print(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responseData = json.decode(response.body);
+
+        await StorageManagement.setStringStorage("access_token", responseData["access_token"]);
+
+        if (!context.mounted) return ;
+        return Navigator.of(context).pushNamed(AppRoutesName.accueilPage);
+
+      }
+      else {
+
+        debugPrint(response.statusCode.toString());
+        if (!context.mounted) return ;
+        if (response.body.isNotEmpty) {
+          final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+          ResponseMessageService.showErrorToast(context, responseData["errorDTOS"][0]["errorMessage"],);
+        }
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
+      if (!context.mounted) return ;
+      ResponseMessageService.showErrorToast(context, AppText.CATCH_ERROR_TEXT,);
+    }
+
+  }
+ /*Future<void> loginRequest(BuildContext context,String emailOrUsername, String password) async {
 
     final url = Uri.parse(ApiUrl().loginUrl);
 
@@ -96,7 +146,9 @@ class AuthApi{
       ResponseMessageService.showErrorToast(context, AppText.CATCH_ERROR_TEXT,);
     }
 
-  }
+  }*/
+
+
 
   functionWhereUserAccountIsActive(bool isMfa,BuildContext context, bodyResponse,dataResponse,String email){
     // redirection vers verification otp
@@ -377,6 +429,8 @@ class AuthApi{
     ResponseMessageService.showErrorToast(context, AppText.CATCH_ERROR_TEXT,);
     }
   }
+
+
 
   static Future<Response> desactivateAccount(String email) async {
 

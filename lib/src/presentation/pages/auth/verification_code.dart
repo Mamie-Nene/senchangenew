@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:senchange/src/presentation/widgets/app_auth_header.dart';
-import 'package:senchange/src/presentation/widgets/auth_page_shell.dart';
+import '/src/presentation/widgets/app_auth_header.dart';
+import '/src/presentation/widgets/auth_page_shell.dart';
 import '/src/data/remote/auth/otp_api.dart';
 
 import '/src/utils/api/api_url.dart';

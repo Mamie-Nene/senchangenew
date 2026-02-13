@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import '/src/presentation/pages/operation_part/achat_new_new.dart';
+import '/src/presentation/pages/operation_part/currency_exchange.dart';
+import '/src/presentation/pages/operation_part/new_vente_screen.dart';
+import '/src/presentation/pages/operation_part/wallet.dart';
+import '/src/presentation/pages/new_auth/new_forgot_pwd.dart';
+import '/src/presentation/pages/new_auth/new_password_recover.dart';
+import '/src/presentation/pages/new_auth/new_profile.dart';
+import '/src/presentation/pages/new_auth/new_signup.dart';
+import '../../presentation/pages/new_auth/new_login.dart';
+import '/src/presentation/pages/home_pages/new_home_screen.dart';
+import '/src/presentation/pages/operation_part/detailTransaction_new.dart';
+import '/src/presentation/pages/operation_part/new_transaction.dart';
 import '/src/presentation/pages/operation_part/achat/achat_details.dart';
 import '/src/presentation/pages/operation_part/vendre/vente_details.dart';
 
 import '/src/presentation/pages/auth/update_password.dart';
 import '/src/presentation/pages/notification/notification_page.dart';
-import '/src/presentation/pages/operation_part/achat/acheter_page.dart';
-import '/src/presentation/pages/operation_part/echange/echange_page.dart';
-import '/src/presentation/pages/operation_part/vendre/vendre_page.dart';
 import '/src/presentation/pages/wallet/wallet_details.dart';
 import '/src/presentation/pages/auth/forgot_pssword.dart';
 import '/src/presentation/pages/auth/parametres.dart';
@@ -47,18 +56,22 @@ class RouteGenerator {
         return MaterialPageRoute( builder: (context) =>   const IntroductionPage());
 
       case AppRoutesName.accueilPage:
-        return MaterialPageRoute( builder: (context) =>  const Accueil());
+        return MaterialPageRoute( builder: (context) =>  const HomeScreen());
+        ///return MaterialPageRoute( builder: (context) =>  const Accueil());
 
     //   --------------------  AUTH Pages ------------------------------
 
       case AppRoutesName.loginPage:
-        return MaterialPageRoute( builder: (context) =>  const LoginPage());
+        return MaterialPageRoute( builder: (context) =>  const LoginScreen());
+       // return MaterialPageRoute( builder: (context) =>  const LoginPage());
 
       case AppRoutesName.signUpPage:
-      return MaterialPageRoute( builder: (context) =>  const SignupPage());
+      return MaterialPageRoute( builder: (context) =>  const SignupScreen());
+      //return MaterialPageRoute( builder: (context) =>  const SignupPage());
 
       case AppRoutesName.passwordResetPage:
-      return MaterialPageRoute( builder: (context) =>  const ResetPassword());
+      return MaterialPageRoute( builder: (context) =>  const NewPasswordScreen());
+      //return MaterialPageRoute( builder: (context) =>  const ResetPassword());
 
       case AppRoutesName.updatePwdPage:
         final args = settings.arguments;
@@ -67,10 +80,12 @@ class RouteGenerator {
         return MaterialPageRoute( builder: (context) =>   UpdatePassword(email: email));
 
       case AppRoutesName.forgotPwdPage:
-      return MaterialPageRoute( builder: (context) =>  const ForgotPassword());
+      return MaterialPageRoute( builder: (context) =>  const ForgotPasswordScreen());
+      //return MaterialPageRoute( builder: (context) =>  const ForgotPassword());
 
       case AppRoutesName.updateProfilPage:
-        return MaterialPageRoute( builder: (context) =>  const  UpdateProfil());
+        return MaterialPageRoute( builder: (context) =>  const  ProfileScreen());
+       // return MaterialPageRoute( builder: (context) =>  const  UpdateProfil());
 
     //   --------------------  OTP Pages ------------------------------
 
@@ -101,7 +116,8 @@ class RouteGenerator {
     //   --------------------  Wallets Pages ------------------------------
 
       case AppRoutesName.walletsPage:
-        return MaterialPageRoute( builder: (context) => const WalletsPage());
+        return MaterialPageRoute( builder: (context) => const SavedAddressesSection());
+        //return MaterialPageRoute( builder: (context) => const WalletsPage());
 
       case AppRoutesName.walletsDetailsPage:
         final args = settings.arguments;
@@ -122,9 +138,19 @@ class RouteGenerator {
     //   --------------------  Operations Pages ------------------------------
 
       case AppRoutesName.acheterPage:
-        return MaterialPageRoute(  builder: (context) =>  AcheterScreen());
+        return MaterialPageRoute(  builder: (context) =>  AchatPageNewNew());
+       // return MaterialPageRoute(  builder: (context) =>  AchatScreen());//2nd
+       // return MaterialPageRoute(  builder: (context) =>  AcheterScreen());///1st
 
-        case AppRoutesName.achatDetailsPage:
+      case AppRoutesName.transactiionOperationPage:
+       return MaterialPageRoute(  builder: (context) => TransactionsScreen());
+
+      case AppRoutesName.detailTransactionPage:
+        final args = settings.arguments;
+        var transaction = (args as Map)["transaction"];
+        return MaterialPageRoute(  builder: (context) => TransactionDetailScreen(transaction: transaction));
+
+      case AppRoutesName.achatDetailsPage:
         final args = settings.arguments;
         var transaction = (args as Map)["transaction"];
         return MaterialPageRoute(  builder: (context) => AchatDetails(transaction: transaction));
@@ -135,10 +161,12 @@ class RouteGenerator {
         return MaterialPageRoute(  builder: (context) => VenteDetails(transaction: transaction));
 
       case AppRoutesName.vendrePage:
-        return MaterialPageRoute(  builder: (context) =>   const VendreScreen());
+        return MaterialPageRoute(  builder: (context) =>   const SellUsdtScreen());
+        //return MaterialPageRoute(  builder: (context) =>   const VendreScreen());
 
       case AppRoutesName.echangePage:
-        return MaterialPageRoute(  builder: (context) =>  const EchangeScreen());
+        return MaterialPageRoute(  builder: (context) =>  const CurrencyConverterPage());
+       // return MaterialPageRoute(  builder: (context) =>  const EchangeScreen());
 
       case AppRoutesName.echangeDetailsPage:
         final args = settings.arguments;
