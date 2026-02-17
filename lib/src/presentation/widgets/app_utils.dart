@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppUtilsWidget{
 
@@ -43,4 +44,69 @@ class AppUtilsWidget{
       ),
     );
   }
+
+  Widget inputLabel(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF3D2A3A),
+        ),
+      ),
+    );
+  }
+
+  Widget inputField({
+    required  TextEditingController controller,
+    required String hint,
+    bool isPassword = false,bool isPasswordVisible = false,
+    Widget? suffixIcon,
+    required Icon iconData,
+     String? Function(String?)? fieldLogic
+  }) {
+
+    return TextFormField(
+      controller: controller,
+      obscureText: isPasswordVisible,
+      validator: fieldLogic??(value) {
+        if (value == null || value.isEmpty) {
+          return "Ce champs est requis";
+        }
+        return null;
+      },
+      keyboardType: TextInputType.text,
+      inputFormatters:[FilteringTextInputFormatter.deny(RegExp(r'\s'))] ,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        prefixIcon: iconData,
+      //  prefixIcon: isPassword ? const Icon(Icons.lock_outline_rounded) : Icon(Icons.email_outlined),
+        prefixIconColor: Color(0xFF3D2A3A),
+        suffixIcon: suffixIcon,
+        hintText: hint,
+        filled: true,
+        fillColor: const Color(0xFFF5EEF3),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  static Widget circleUI(double size, Color color) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+      ),
+    );
+  }
+
+
 }

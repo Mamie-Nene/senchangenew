@@ -1,80 +1,41 @@
 import 'package:flutter/material.dart';
 
+import '/src/presentation/widgets/app_utils.dart';
+import '/src/presentation/widgets/app_auth_header.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
-
-  static Widget _circle(double size, Color color) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-    );
-  }
-
-  static Widget _inputLabel(String text) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF3D2A3A),
-        ),
-      ),
-    );
-  }
-
-  static Widget _inputField({
-    required TextEditingController controller,
-    String hint = "",
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFF5EEF3),
-        contentPadding:
-        const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _forgotPwdKey = GlobalKey<FormState>(); // Définition de la clé
+  bool _isRunning = false;
   TextEditingController emailOrPhoneController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B),
-      body: SafeArea(
-        child: Stack(
+      backgroundColor: AppColors.mainAppColor,
+      body:  Stack(
           children: [
+
             Positioned(
               top: -40,
               left: -40,
-              child: ForgotPasswordScreen._circle(
+              child: AppUtilsWidget.circleUI(
                   120, Colors.orange.withOpacity(0.25)),
             ),
             Positioned(
               bottom: 40,
               right: -30,
-              child: ForgotPasswordScreen._circle(
+              child: AppUtilsWidget.circleUI(
                   140, Colors.orange.withOpacity(0.20)),
             ),
-
             Center(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 18),
@@ -86,53 +47,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 child: SingleChildScrollView(
                   child: Column(
+
                     children: [
-                      // Header
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6B3B5B),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          children: const [
-                            Text(
-                              "»» SENCHANGE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Mot de passe oublié",
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Align(alignment:Alignment.centerLeft,child: BackButton()),
 
-                      const SizedBox(height: 20),
+                      AppAuthHeader(title: AppText.AUTH_SUBTITLE_TEXT,subtitle: "Réinitialisation",),
 
-                      const Text(
-                        "Réinitialisation",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF3D2A3A),
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      const Text(
-                        "Entrez votre email ou numéro de téléphone pour recevoir "
-                            "les instructions de réinitialisation.",
+                      Text(AppText.FORGET_PWD_SUBTITLE_TEXT,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14,
@@ -142,11 +63,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                       const SizedBox(height: 22),
 
-                      ForgotPasswordScreen._inputLabel("Email ou Téléphone"),
-                      const SizedBox(height: 8),
-                      ForgotPasswordScreen._inputField(
+                     // AppUtilsWidget().inputLabel("Email ou Téléphone"), const SizedBox(height: 8),
+                    Form(
+                      key: _forgotPwdKey,
+                      child : AppUtilsWidget().inputField(
                         controller: emailOrPhoneController,
+                        hint: '770000000',
+                        iconData: Icon(Icons.phone),
                       ),
+                    ),
 
                       const SizedBox(height: 22),
 
@@ -155,14 +80,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF6B300),
+                            backgroundColor:  AppColors.secondAppColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
                             elevation: 0,
                           ),
-                          onPressed: () {
-                            // TODO: send reset request
+                          onPressed: _isRunning?null: () async {
+                            setState(() {
+                              _isRunning=true;
+                            });
+                            if (_forgotPwdKey.currentState != null && _forgotPwdKey.currentState!.validate()) {
+                             // await  OtpApi().sendOtpCodeForPasswordForgetten(context, emailController.text,Constants.appNameForHeaders);
+                            }
+                            setState(() {
+                              _isRunning=false;
+                            });
                           },
                           child: const Text(
                             "Réinitialiser le mot de passe",
@@ -179,10 +112,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          "Retour à la connexion",
+                        child:  Text(
+                          "Retour à la page de connexion",
                           style: TextStyle(
-                            color: Color(0xFFF6B300),
+                            color: AppColors.secondAppColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -194,7 +127,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 }

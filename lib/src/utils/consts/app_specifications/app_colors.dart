@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 
 class AppColors{
+  
+  static Color mainAppColor =Color(0xFF6B3B5B);
+  static Color secondAppColor =Color(0xFFF6B300);
+  static Color mainAppTextColor = Color(0xFF3D2A3A);
 
   // for app store requirement on ipad
   static Color textGrisColor = const Color(0xFF3A3A3A);
@@ -26,7 +30,7 @@ class AppColors{
 
   static Color orangeFonce = const Color(0xFFD0A306);
   static Color textLightGris = const Color(0xFF504D4D);
-
+  
   static Color mainVioletColor = const Color(0xFF724966);
   static Color secondVioletColor = const Color(0xFF744C64);
 

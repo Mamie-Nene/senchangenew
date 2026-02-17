@@ -17,25 +17,24 @@ import '/src/presentation/pages/operation_part/vendre/vente_details.dart';
 import '/src/presentation/pages/auth/update_password.dart';
 import '/src/presentation/pages/notification/notification_page.dart';
 import '/src/presentation/pages/wallet/wallet_details.dart';
-import '/src/presentation/pages/auth/forgot_pssword.dart';
+
 import '/src/presentation/pages/auth/parametres.dart';
 import '/src/presentation/pages/settings/follow_us.dart';
 import '/src/presentation/pages/settings/infos_juridiques.dart';
 import '/src/presentation/pages/settings/security.dart';
 import '/src/presentation/pages/settings/share.dart';
-import '/src/presentation/pages/auth/update_profil.dart';
 import '/src/presentation/pages/home_pages/introduction_page.dart';
 import '/src/presentation/pages/settings/reclamation.dart';
-import '/src/presentation/pages/auth/reset_password.dart';
+
 import '/src/presentation/pages/settings/support.dart';
 import '/src/presentation/pages/wallet/add_wallet.dart';
-import '/src/presentation/pages/wallet/wallets_page.dart';
+
 import '../../presentation/pages/auth/verification_code.dart';
-import '/src/presentation/pages/home_pages/accueil.dart';
+
 import '/src/presentation/pages/add_mobile_money_account.dart';
-import '../../presentation/pages/auth/signup.dart';
+
 import '/src/presentation/pages/home_pages/splash_screen.dart';
-import '/src/presentation/pages/auth/login.dart';
+
 import '/src/presentation/pages/utils_pages/all_directories.dart';
 import '/src/utils/consts/routes/app_routes_name.dart';
 

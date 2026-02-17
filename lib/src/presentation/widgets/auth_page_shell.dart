@@ -34,7 +34,7 @@ class AuthPageShell extends StatelessWidget {
           child: Column(
             //isForSignUpPage? mainAxisAlignment: MainAxisAlignment.center
             children: [
-              const AppAuthHeader(),
+              const AppAuthHeader(title: '',subtitle: '',),
 
               SizedBox(height:AppDimensions.h20(context)),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({super.key});
@@ -21,7 +22,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B),
+      backgroundColor: AppColors.mainAppColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -91,7 +92,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 18),
       decoration: BoxDecoration(
-        color: const Color(0xFF6B3B5B),
+        color: AppColors.mainAppColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Text(

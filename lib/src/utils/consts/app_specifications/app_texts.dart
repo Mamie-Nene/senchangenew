@@ -3,7 +3,11 @@ class AppText{
 
   // ------------------- AUTH TEXTS ---------------
 
+  static const AUTH_TITLE_TEXT= "»» SENCHANGE";
+
   static const AUTH_SUBTITLE_TEXT= 'Acheter et vendre vos stablecoins en toute simplicité';
+
+  static const AUTH_SUBTITLE_TEXT2= "Acheter et vendre de la cryptomonnaie en\n toute simplicité";
 
   static const SIGN_UP_TITLE_TEXT= 'Inscrivez-vous en un clic';
 
@@ -21,6 +25,7 @@ class AppText{
   // ------------------- SETTINGS TEXTS ---------------
 
   static const FORGET_PWD_TEXT= 'Mot de passe oublié ?';
+  static const FORGET_PWD_SUBTITLE_TEXT= 'Entrez votre email ou numéro de téléphone pour recevoir les instructions de réinitialisation.';
 
   static const PWD_LENGHT_INFERIOR_CHECK_TEXT= 'Le mot de passe doit contenir au moins 8 caratères';
 

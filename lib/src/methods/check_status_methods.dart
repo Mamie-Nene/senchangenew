@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Src/presentation/pages/home_pages/accueil.dart';
-import '../../main.dart';
-import '../presentation/pages/auth/login.dart';
 import '../utils/consts/routes/app_routes_name.dart';
 
 class CheckStatusMethods{

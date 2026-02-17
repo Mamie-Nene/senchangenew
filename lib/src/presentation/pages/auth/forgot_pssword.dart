@@ -34,7 +34,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
-              const AppAuthHeader(),
+              const AppAuthHeader(title: '',subtitle: '',),
                SizedBox(height: AppDimensions.h20(context)),
               // container
               Expanded(

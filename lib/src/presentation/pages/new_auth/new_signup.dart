@@ -1,4 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '/src/methods/response_messages.dart';
+import '/src/presentation/widgets/app_auth_header.dart';
+import '/src/services/open_link_service.dart';
+import '/src/utils/api/api_url.dart';
+
+import '/src/presentation/widgets/app_utils.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -8,6 +16,11 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final _signUpKey = GlobalKey<FormState>();
+  bool _isPwdVisible = false;
+  bool isConditionsAccepted = false;
+  bool _isRunning = false;
+
   TextEditingController emailController = TextEditingController();
   TextEditingController telephoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -16,9 +29,20 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController usernameController = TextEditingController();
 
   @override
+  void dispose() {
+    emailController.dispose();
+    telephoneController.dispose();
+    passwordController.dispose();
+    nomCompletController.dispose();
+    confirmPasswordController.dispose();
+    usernameController.dispose();
+
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B),
+     // backgroundColor: AppColors.mainAppColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -26,126 +50,180 @@ class _SignupScreenState extends State<SignupScreen> {
               top: -40,
               left: -40,
               child:
-              _circle(120, Colors.orange.withOpacity(0.25)),
+              AppUtilsWidget.circleUI(120, Colors.orange.withOpacity(0.25)),
             ),
             Positioned(
               bottom: 40,
               right: -30,
               child:
-              _circle(140, Colors.orange.withOpacity(0.20)),
+              AppUtilsWidget.circleUI(140, Colors.orange.withOpacity(0.20)),
             ),
+            Container(
+            //  margin: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+             /* decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(26),
+              ),*/
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(alignment:Alignment.centerLeft,child: BackButton()),
 
-            Center(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 18),
-                padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(26),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Header
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6B3B5B),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          children: const [
-                            Text(
-                              "»» SENCHANGE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Créer un compte",
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
+                    AppAuthHeader(title: "Création de compte",subtitle: "Inscription",),
+                      Form(
+                        key: _signUpKey,
+                        child:  Column(
+                      spacing: 8,
+                      children: [
+                      AppUtilsWidget().inputLabel("Nom Complet"),
+                      AppUtilsWidget().inputField(
+                        controller: nomCompletController,
+                        hint:"Votre nom complet",
+                        iconData: Icon(Icons.person),
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
 
-                      const Text(
-                        "Inscription",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF3D2A3A),
+                      AppUtilsWidget().inputLabel("Nom d'utilisateur",),
+                        AppUtilsWidget().inputField(
+                          controller: usernameController,
+                          hint:"username",
+                          iconData: Icon(Icons.person),
                         ),
+
+                      const SizedBox(height: 8),
+                      AppUtilsWidget().inputLabel("Email"),
+                      AppUtilsWidget().inputField(
+                          controller: emailController,
+                          hint:"vous@exemple.com",
+                          iconData: Icon(Icons.email_outlined),
                       ),
 
-                      const SizedBox(height: 22),
-
-                      _inputLabel("Nom Complet"),
                       const SizedBox(height: 8),
-                      _inputField(controller: nomCompletController,hint:"Votre nom complet",iconData: Icon(Icons.person),),
 
-                      const SizedBox(height: 16),
+                      AppUtilsWidget().inputLabel("Téléphone"),
 
-                      _inputLabel("Nom d'utilisateur",),
+                      AppUtilsWidget().inputField(
+                          controller: telephoneController,
+                          hint: "770000000",
+                          iconData: Icon(Icons.phone),
+                       ),
+
                       const SizedBox(height: 8),
-                      _inputField(controller: usernameController,hint:"user1",iconData: Icon(Icons.verified_user_outlined),),
 
-                      const SizedBox(height: 16),
-
-                      _inputLabel("Email"),
-                      const SizedBox(height: 8),
-                      _inputField(controller: emailController,hint:"vous@exemple.com",iconData: Icon(Icons.email_outlined)),
-
-                      const SizedBox(height: 16),
-
-                      _inputLabel("Téléphone"),
-                      const SizedBox(height: 8),
-                      _inputField(controller: telephoneController,hint: "770000000",iconData: Icon(Icons.phone)),
-
-                      const SizedBox(height: 16),
-
-                      _inputLabel("Mot de passe"),
-                      const SizedBox(height: 8),
-                      _inputField(
-                        controller: passwordController, hint:"..........",iconData: Icon(Icons.email_outlined),
+                      AppUtilsWidget().inputLabel("Mot de passe"),
+                      AppUtilsWidget().inputField(
+                        controller: passwordController,
+                        hint:"..........",
+                        iconData:Icon(Icons.lock_outline_rounded),
                         isPassword: true,
+                        isPasswordVisible: _isPwdVisible,
+                        suffixIcon:  IconButton(
+                            onPressed: (){
+                              setState(() {
+                                _isPwdVisible = !_isPwdVisible;
+                              });
+                            }, icon: _isPwdVisible? Icon(Icons.visibility):Icon(Icons.visibility_off)
+                        ),
+
                       ),
 
-                      const SizedBox(height: 16),
-
-                      _inputLabel("Confirmer mot de passe"),
                       const SizedBox(height: 8),
-                      _inputField(
-                        controller: confirmPasswordController,hint:"..........",iconData: Icon(Icons.email_outlined),
-                        isPassword: true,
+
+                      AppUtilsWidget().inputLabel("Confirmer mot de passe"),
+                      AppUtilsWidget().inputField(
+                          controller: confirmPasswordController,
+                          hint:"..........",
+                          iconData: Icon(Icons.email_outlined),
+                          isPassword: true,
+                          isPasswordVisible: _isPwdVisible,
+                          suffixIcon:  IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  _isPwdVisible = !_isPwdVisible;
+                                });
+                              }, icon: _isPwdVisible? Icon(Icons.visibility):Icon(Icons.visibility_off)
+                          ),
+
+                          fieldLogic:  (value) {
+                          if (value == null || value.isEmpty) {
+                              return "Veuillez confirmer votre mot de passe";
+                            }
+                            if (value != passwordController.text) {
+                              return "Les mots de passe ne sont pas identiques";
+                            }
+                            return null;
+                          }
+                          ),
+                        ],
                       ),
+                    ),
 
+                      SizedBox(height: AppDimensions.h20(context)),
+                      CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading, // Place la case à cocher avant le texte
+                        title: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: AppDimensions().responsiveFont(context,16),
+                            ),
+                            children: [
+                              TextSpan(text: "J'accepte les "),
+                              TextSpan(
+                                text: "conditions générales d'utilisation",
+                                style: TextStyle(
+                                  color: AppColors.mainVioletColor,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () => OpenLinkService.openExternalLink(ApiUrl().senChangeCGULink),
+                              ),
+                            ],
+                          ),
+                        ),
+                        value: isConditionsAccepted,
+                        activeColor: AppColors.orangeColor,
+                        contentPadding: EdgeInsets.all(0),
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isConditionsAccepted = value!;
+                          });
+                        },
+                      ),
                       const SizedBox(height: 22),
-
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF6B300),
+                            backgroundColor: AppColors.secondAppColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
                             elevation: 0,
                           ),
-                          onPressed: () {
-                            // TODO: signup logic
-                          },
+                          onPressed: _isRunning? null :() async {
+                              setState(() {
+                                _isRunning=true;
+                              });
+                              if (_signUpKey.currentState != null &&   _signUpKey.currentState!.validate()) {
+                                if (!isConditionsAccepted) {
+                                  ResponseMessageService.showErrorToast(context, "Merci d'accepter nos conditions générales d'utilisation pour continuer",);
+                                } else {
+
+                                 // UserEntity userRegistered = UserEntity(prenomController.text, nomController.text, telephoneController.text, emailController.text, usernameController.text, passwordController.text);
+
+                                 // await  AuthApi().register(context, userRegistered).onError((error, stackTrace) =>  passwordController.setText(""));
+                                }
+                              }
+                              setState(() {
+                                _isRunning=false;
+                              });
+                            },
+
                           child: const Text(
                             "Créer un compte",
                             style: TextStyle(
@@ -165,10 +243,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           const Text("Déjà un compte ? "),
                           GestureDetector(
                             onTap: () => Navigator.pop(context),
-                            child: const Text(
+                            child: Text(
                               "Se connecter",
                               style: TextStyle(
-                                color: Color(0xFFF6B300),
+                                color: AppColors.secondAppColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -179,70 +257,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
-            ),
+
           ],
         ),
       ),
     );
   }
 
-
-  static Widget _circle(double size, Color color) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-    );
-  }
-
-  static Widget _inputLabel(String text) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF3D2A3A),
-        ),
-      ),
-    );
-  }
-
-   Widget _inputField({
-     required String hint,
-    required TextEditingController controller,
-     required Icon iconData,
-    bool isPassword = false,bool isPwdVisible = false
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: isPassword,
-      decoration: InputDecoration(
-        prefixIcon: isPassword ? const Icon(Icons.lock_outline_rounded) : iconData,
-        prefixIconColor: Color(0xFF3D2A3A),
-        suffixIcon:isPassword ? IconButton(
-            onPressed: (){
-              setState(() {
-                isPwdVisible = !isPwdVisible;
-              });
-            }, icon: isPwdVisible? Icon(Icons.visibility):Icon(Icons.visibility_off)
-        )
-            :
-        null,
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFF5EEF3),
-        contentPadding:
-        const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({super.key});
@@ -14,7 +15,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B),
+      backgroundColor: AppColors.mainAppColor,
       body: SafeArea(
         child: Center(
           child: Container(
@@ -56,7 +57,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 18),
       decoration: BoxDecoration(
-        color: const Color(0xFF6B3B5B),
+        color: AppColors.mainAppColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Text(

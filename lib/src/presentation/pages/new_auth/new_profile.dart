@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '/src/utils/consts/routes/app_routes_name.dart';
+import 'package:senchange/src/utils/consts/app_specifications/allDirectories.dart';
+import 'package:senchange/src/utils/consts/routes/app_routes_name.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -7,9 +8,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B),
+      backgroundColor: AppColors.mainAppColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF6B3B5B),
+        backgroundColor: AppColors.mainAppColor,
         elevation: 0,
         title: const Text("Profil"),
         centerTitle: true,

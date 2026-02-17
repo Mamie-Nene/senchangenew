@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:senchange/src/data/remote/auth/auth_api.dart';
+import 'package:senchange/src/presentation/widgets/app_auth_header.dart';
+import 'package:senchange/src/presentation/widgets/app_utils.dart';
+import 'package:senchange/src/utils/consts/app_specifications/allDirectories.dart';
 import '/src/methods/storage_management.dart';
 import '/src/utils/consts/routes/app_routes_name.dart';
 
@@ -17,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  /*setUserEmailOrUsername() async {
+  setUserEmailOrUsername() async {
     // check if email/username exist on local storage
     var email = await StorageManagement.getStorage("email");
     if (email != null && email.isNotEmpty) {
@@ -36,26 +39,24 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
 
   }
-  */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6B3B5B), // purple background
-      body: SafeArea(
-        child: Stack(
+      backgroundColor: AppColors.mainAppColor, // purple background
+      body:  Stack(
           children: [
             // Decorative circles
             Positioned(
               top: -40,
               left: -40,
-              child: _circle(120, Colors.orange.withOpacity(0.25)),
+              child: AppUtilsWidget.circleUI(120, Colors.orange.withOpacity(0.25)),
             ),
             Positioned(
-              bottom: 40,
+              bottom: -20,
               right: -30,
-              child: _circle(140, Colors.orange.withOpacity(0.20)),
+              child: AppUtilsWidget.circleUI(140, Colors.orange.withOpacity(0.20)),
             ),
-
             // Main Card
             Center(
               child: Container(
@@ -70,65 +71,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Header inside card
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6B3B5B),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          children: const [
-                            Text(
-                              "»» SENCHANGE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
+                      AppAuthHeader(title: AppText.AUTH_SUBTITLE_TEXT,subtitle: "Connexion",),
+
+                      Form(
+                        key: _loginKey,
+                        child:  Column(
+                          spacing: 8,
+                          children: [
+                            AppUtilsWidget().inputLabel("Email"),
+                            AppUtilsWidget().inputField(
+                               controller:  emailController,
+                                hint: "vous@exemple.com",
+                              /*fieldLogic: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "L'email ou le nom d'utilisateur est requis";
+                                }
+                                return null;
+                              },*/
+                              iconData:  Icon(Icons.email_outlined),
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Acheter et vendre de la cryptomonnaie en\n toute simplicité",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
+                            const SizedBox(height: 10),
+                            AppUtilsWidget().inputLabel("Mot de passe"),
+                            AppUtilsWidget().inputField(
+                              controller:  passwordController ,
+                                hint: "..........",
+                                isPassword: true,
+                                isPasswordVisible: _isPwdVisible,
+                                suffixIcon:  IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      _isPwdVisible = !_isPwdVisible;
+                                    });
+                                  }, icon: _isPwdVisible? Icon(Icons.visibility):Icon(Icons.visibility_off)
                               ),
+
+                              iconData:Icon(Icons.lock_outline_rounded),
                             ),
                           ],
                         ),
                       ),
-
-                      const SizedBox(height: 20),
-
-                      const Text(
-                        "Connexion",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF3D2A3A),
-                        ),
-                      ),
-
-                      const SizedBox(height: 22),
-
-                  Form(
-                    key: _loginKey,
-                      child:  Column(
-                        children: [
-                      _inputLabel("Email"),
-                      const SizedBox(height: 8),
-                      _inputField(emailController,hint: "vous@exemple.com"),
-
-                      const SizedBox(height: 18),
-
-                      _inputLabel("Mot de passe"),
-                      const SizedBox(height: 8),
-                      _inputField(passwordController ,hint: "..........", isPassword: true,isPwdVisible: _isPwdVisible),
-
-                      const SizedBox(height: 10),
 
                       Align(
                         alignment: Alignment.centerRight,
@@ -136,18 +117,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.of(context).pushNamed(AppRoutesName.forgotPwdPage);
                           },
-                          child: const Text(
+                          child:  Text(
                             "Mot de passe oublié ?",
                             style: TextStyle(
-                              color: Color(0xFFF6B300),
+                              color: AppColors.secondAppColor,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                        ],
-                      ),
-                  ),
                       const SizedBox(height: 8),
 
                       SizedBox(
@@ -155,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF6B300),
+                            backgroundColor: AppColors.secondAppColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -165,15 +143,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _isRunning=true;
                             });
-                            if (_loginKey.currentState!.validate()) {
-                              print(emailController.text)
-;                              await AuthApi().loginRequest(context,emailController.text, passwordController.text,);
+                            if (_loginKey.currentState != null && _loginKey.currentState!.validate()) {
+                              await AuthApi().loginRequest(context,emailController.text, passwordController.text,);
                             }
                             setState(() {
                               _isRunning=false;
                             });
                           },
-                          //onPressed: () {Navigator.of(context).pushNamed(AppRoutesName.accueilPage);},
                           child: const Text(
                             "Se connecter",
                             style: TextStyle(
@@ -191,15 +167,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Pas encore de compte ? "),
-                          GestureDetector(
+                          InkWell(
                             onTap: () {
                               Navigator.of(context).pushNamed(AppRoutesName.signUpPage);
-
                             },
-                            child: const Text(
+                            child: Text(
                               "Inscrivez-vous",
                               style: TextStyle(
-                                color: Color(0xFFF6B300),
+                                color: AppColors.secondAppColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -213,63 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
 
-  static Widget _circle(double size, Color color) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-    );
-  }
-
-  static Widget _inputLabel(String text) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF3D2A3A),
-        ),
-      ),
-    );
-  }
-
-  Widget _inputField(TextEditingController controller,{required String hint, bool isPassword = false, bool isPwdVisible = false}) {
-
-    return TextField(
-      controller: controller,
-
-      obscureText: isPassword,
-      decoration: InputDecoration(
-        prefixIcon: isPassword ? const Icon(Icons.lock_outline_rounded) : Icon(Icons.email_outlined),
-        prefixIconColor: Color(0xFF3D2A3A),
-        suffixIcon:isPassword ? IconButton(
-           onPressed: (){
-             setState(() {
-               isPwdVisible = !isPwdVisible;
-             });
-           }, icon: isPwdVisible? Icon(Icons.visibility):Icon(Icons.visibility_off)
-       )
-       :
-       null,
-
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFF5EEF3),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-      ),
     );
   }
 
