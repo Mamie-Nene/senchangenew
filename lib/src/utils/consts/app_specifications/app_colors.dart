@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class AppColors{
   
-  static Color mainAppColor =Color(0xFF6B3B5B);
-  static Color secondAppColor =Color(0xFFF6B300);
-  static Color mainAppTextColor = Color(0xFF3D2A3A);
+  static Color mainAppColor = const Color(0xFF6B3B5B);
+  static Color secondAppColor = const Color(0xFFF6B300);
+  static Color mainAppTextColor = const  Color(0xFF3D2A3A);
+  static Color mainBgColor =  const Color(0xFFF6EEF3);
+  static Color mainCardBgColor =  const Color(0xffECDCEC);
 
   // for app store requirement on ipad
   static Color textGrisColor = const Color(0xFF3A3A3A);

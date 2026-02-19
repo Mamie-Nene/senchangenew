@@ -1,39 +1,36 @@
 import 'package:flutter/material.dart';
-import '/src/presentation/pages/operation_part/achat_new_new.dart';
-import '/src/presentation/pages/operation_part/currency_exchange.dart';
-import '/src/presentation/pages/operation_part/new_vente_screen.dart';
-import '/src/presentation/pages/operation_part/wallet.dart';
-import '/src/presentation/pages/new_auth/new_forgot_pwd.dart';
-import '/src/presentation/pages/new_auth/new_password_recover.dart';
-import '/src/presentation/pages/new_auth/new_profile.dart';
-import '/src/presentation/pages/new_auth/new_signup.dart';
-import '../../presentation/pages/new_auth/new_login.dart';
-import '/src/presentation/pages/home_pages/new_home_screen.dart';
-import '/src/presentation/pages/operation_part/detailTransaction_new.dart';
-import '/src/presentation/pages/operation_part/new_transaction.dart';
-import '/src/presentation/pages/operation_part/achat/achat_details.dart';
-import '/src/presentation/pages/operation_part/vendre/vente_details.dart';
+import 'package:senchange/src/presentation/pages/avant/settings/infos_juridiques.dart';
+import 'package:senchange/src/presentation/pages/avant/settings/security.dart';
+import 'package:senchange/src/presentation/pages/new_pages/auth/new_forgot_pwd.dart';
+import 'package:senchange/src/presentation/pages/new_pages/auth/new_login.dart';
+import 'package:senchange/src/presentation/pages/new_pages/auth/new_password_recover.dart';
+import 'package:senchange/src/presentation/pages/new_pages/auth/new_profile.dart';
+import 'package:senchange/src/presentation/pages/new_pages/auth/new_signup.dart';
+import 'package:senchange/src/presentation/pages/new_pages/home_pages/splash_screen.dart';
+import 'package:senchange/src/presentation/pages/new_pages/operation/achat_new_new.dart';
+import 'package:senchange/src/presentation/pages/new_pages/operation/currency_exchange.dart';
+import 'package:senchange/src/presentation/pages/new_pages/operation/new_vente_screen.dart';
 
-import '/src/presentation/pages/auth/update_password.dart';
-import '/src/presentation/pages/notification/notification_page.dart';
-import '/src/presentation/pages/wallet/wallet_details.dart';
+import '/src/presentation/pages/avant/auth/parametres.dart';
+import '/src/presentation/pages/avant/auth/update_password.dart';
+import '/src/presentation/pages/avant/auth/verification_code.dart';
+import '/src/presentation/pages/avant/notification/notification_page.dart';
+import '/src/presentation/pages/avant/operation_part/achat/achat_details.dart';
+import '/src/presentation/pages/avant/operation_part/vendre/vente_details.dart';
+import '/src/presentation/pages/avant/settings/follow_us.dart';
+import '/src/presentation/pages/avant/settings/reclamation.dart';
+import '/src/presentation/pages/avant/settings/share.dart';
+import '/src/presentation/pages/avant/settings/support.dart';
+import '/src/presentation/pages/avant/wallet/add_wallet.dart';
+import '/src/presentation/pages/avant/wallet/wallet_details.dart';
+import '../../presentation/pages/new_pages/operation/wallet.dart';
 
-import '/src/presentation/pages/auth/parametres.dart';
-import '/src/presentation/pages/settings/follow_us.dart';
-import '/src/presentation/pages/settings/infos_juridiques.dart';
-import '/src/presentation/pages/settings/security.dart';
-import '/src/presentation/pages/settings/share.dart';
-import '/src/presentation/pages/home_pages/introduction_page.dart';
-import '/src/presentation/pages/settings/reclamation.dart';
+import '../../presentation/pages/new_pages/home_pages/new_home_screen.dart';
+import '../../presentation/pages/new_pages/operation/detailTransaction_new.dart';
+import '../../presentation/pages/new_pages/operation/new_transaction.dart';
+import '../../presentation/pages/new_pages/home_pages/introduction_page.dart';
 
-import '/src/presentation/pages/settings/support.dart';
-import '/src/presentation/pages/wallet/add_wallet.dart';
-
-import '../../presentation/pages/auth/verification_code.dart';
-
-import '/src/presentation/pages/add_mobile_money_account.dart';
-
-import '/src/presentation/pages/home_pages/splash_screen.dart';
+import '/src/presentation/pages/avant/add_mobile_money_account.dart';
 
 import '/src/presentation/pages/utils_pages/all_directories.dart';
 import '/src/utils/consts/routes/app_routes_name.dart';

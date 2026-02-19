@@ -9,7 +9,8 @@ class TransactionEntity{
   String transactionId, dateTransaction,typeTransaction;
   String statusTransaction;//,username,userFullName
   double? amountInit, amountChange;
-  String?  phoneNumber , operator,addressOwner; //,
+  String?  phoneNumber , operator, addressOwner; //,
+
 
   TransactionEntity(
       this.addressWallet,
