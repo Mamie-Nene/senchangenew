@@ -21,7 +21,7 @@ import '/src/presentation/pages/avant/settings/follow_us.dart';
 import '/src/presentation/pages/avant/settings/reclamation.dart';
 import '/src/presentation/pages/avant/settings/share.dart';
 import '/src/presentation/pages/avant/settings/support.dart';
-import '/src/presentation/pages/avant/wallet/add_wallet.dart';
+import '../../presentation/pages/new_pages/operation/add_wallet.dart';
 import '/src/presentation/pages/avant/wallet/wallet_details.dart';
 import '../../presentation/pages/new_pages/operation/wallet.dart';
 
@@ -112,7 +112,7 @@ class RouteGenerator {
     //   --------------------  Wallets Pages ------------------------------
 
       case AppRoutesName.walletsPage:
-        return MaterialPageRoute( builder: (context) => const SavedAddressesSection());
+        return MaterialPageRoute( builder: (context) => const GestionWallet());
         //return MaterialPageRoute( builder: (context) => const WalletsPage());
 
       case AppRoutesName.walletsDetailsPage:

@@ -48,11 +48,15 @@ class AuthApi{
 
       final response = await http.post(url, headers: headers, body: body);
 
-print(response.body);
+      print(response.body);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         var responseData = json.decode(response.body);
+        var userId = responseData["user"];
+        print(userId);
 
         await StorageManagement.setStringStorage("access_token", responseData["access_token"]);
+        await StorageManagement.setStringStorage("user_id", responseData["id"]);
 
         if (!context.mounted) return ;
         return Navigator.of(context).pushNamed(AppRoutesName.accueilPage);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:senchange/src/data/local/operation_card_data.dart';
+import '/src/data/local/operation_card_data.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '/src/data/local/transaction_local_data.dart';
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<ActionButton> actions = OperationCardLocalData().actions;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+
      // backgroundColor: AppColors.mainBgColor,
       // backgroundColor: const Color(0xFFFAEAF4),
       body: SafeArea(

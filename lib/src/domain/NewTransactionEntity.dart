@@ -13,7 +13,7 @@ class NewTransactionEntity{
 
 
   NewTransactionEntity(//txHash //fee
-          {
+   {
         required this.transaction_type,
         required this.from_currency,
         required this.to_currency,

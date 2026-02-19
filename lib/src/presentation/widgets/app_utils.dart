@@ -59,7 +59,7 @@ class AppUtilsWidget {
         final statusTransaction = getTransactionStatusTranslated(transaction.status);
 
         final icon = getTransactionTypeIcon(transaction.transaction_type);
-
+        final theme = Theme.of(context);
 
         return InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -74,7 +74,7 @@ class AppUtilsWidget {
               border: isForHomePage ? Border.all(
                   color: Color(0xFF3D2A3A).withOpacity(0.2)) : null,
               color: isForHomePage
-                  ? AppColors.mainAppColor.withOpacity(0.05)
+                  ? theme.cardColor
                   : Colors.white,
               // color:isForHomePage? AppColors.mainCardBgColor.withOpacity(0.2):Colors.white,
             ),
@@ -330,6 +330,36 @@ class AppUtilsWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  paymentMethodCard  (BuildContext context,{
+    required String label,
+    required String imageUrl,
+    required bool selected,
+    required VoidCallback onTap
+  }){
+    //,Theme.of(context).primaryColor
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: selected ?Theme.of(context).primaryColor.withOpacity(0.1):Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            width: 2,
+            color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
+          ),
+        ),
+        child: Column(
+          children: [
+            Image.network(imageUrl, height: 40),
+            const SizedBox(height: 8),
+            Text(label),
+          ],
+        ),
       ),
     );
   }

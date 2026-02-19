@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:senchange/src/data/local/transaction_local_data.dart';
-import 'package:senchange/src/domain/NewTransactionEntity.dart';
-import 'package:senchange/src/presentation/pages/new_pages/home_pages/new_home_screen.dart';
-import 'package:senchange/src/presentation/widgets/app_utils.dart';
-import 'detailTransaction_new.dart';
-import '/src/domain/models/TransactionModel.dart';
-import '/src/utils/consts/routes/app_routes_name.dart';
+import '/src/data/local/transaction_local_data.dart';
+import '/src/domain/NewTransactionEntity.dart';
+import '/src/presentation/widgets/app_utils.dart';
+
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:senchange/src/presentation/pages/new_pages/operation/achat_new_new.dart';
+import 'package:senchange/src/presentation/widgets/app_utils.dart';
 
 import '/src/utils/consts/routes/app_routes_name.dart';
 
@@ -114,7 +115,7 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: PaymentMethodCard(
+                      child: AppUtilsWidget().paymentMethodCard(context,
                         label: "Wave",
                         imageUrl:
                         "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/59075c4f-9488-49fc-98c0-74cd58a3ee1d.png",
@@ -125,7 +126,7 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: PaymentMethodCard(
+                      child: AppUtilsWidget().paymentMethodCard(context,
                         label: "Orange Money",
                         imageUrl:
                         "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/5dc4224f-07f8-4888-bb18-d8a43f452fe5.png",

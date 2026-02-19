@@ -1,4 +1,4 @@
-import 'package:senchange/src/utils/api/api_url.dart';
+import '/src/utils/api/api_url.dart';
 
 import '/src/methods/storage_management.dart';
 

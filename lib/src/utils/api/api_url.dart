@@ -6,16 +6,48 @@ class ApiUrl{
 
   //  ---------------------- Const Var --------------------
 
-  static const String baseUrl='https://xakfjbfsigtjibefcpgc.supabase.co/'; // Prod
-  static const String apiKey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha2ZqYmZzaWd0amliZWZjcGdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzc5NzcsImV4cCI6MjA4MDk1Mzk3N30.oCItXwI6RzJjORh68ZQfj2F4WXvlmzHbnVK330dmip0"; // Prod
+  static const String baseUrl='https://xakfjbfsigtjibefcpgc.supabase.co/';
+  static const String apiKey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha2ZqYmZzaWd0amliZWZjcGdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzc5NzcsImV4cCI6MjA4MDk1Mzk3N30.oCItXwI6RzJjORh68ZQfj2F4WXvlmzHbnVK330dmip0";
+
+  //  ------------------------- NEW --------------------
+
+  String loginUrl="$baseUrl/auth/v1/token?grant_type=password";
+
+  String signUpUrl="$baseUrl/auth/v1/signup";
+  
+  String logout="$baseUrl/auth/v1/logout";
+
+  String getHistoriqueTransaction="$baseUrl/rest/v1/transactions?select=*&user_id=eq.41d07550-b58a-4fbc-87e1-5c490f8a854d&order=created_at.desc&offset=0&limit=5";
+
+  String getListWallet="$baseUrl/rest/v1/wallet_addresses";
+  String getCurrencyExchangeList="$baseUrl/rest/v1/exchange_rates?select=*&is_active=eq.true";
+
+
+  String buy="$baseUrl/buy";
+
+  String sell="$baseUrl/sell";
+
+  String transactions="$baseUrl/transactions";
+
+  String exchangeRate="$baseUrl/exchange_rates";
+
+  String paymentMethods="$baseUrl/payment_methods";
+
+  String blockchainTypes="$baseUrl/blockchain_types";
+
+  String senchangeWallets="$baseUrl/senchange_wallets";
+
+  String userWalletsAddresses="$baseUrl/wallet_addresses";
+
+  String profileUser="$baseUrl/profiles";
+
+
+  //  ------------------------- AVANT --------------------
+
 
   static const String stompWSUrl='wss://newsenchange.com:8086/socket/websocket';
 
   //  ------------------------- AUTH --------------------
-
-  String loginUrl="$baseUrl/auth/v1/token?grant_type=password";
-
-  String signUpUrl="$baseUrl/user/register";
 
   String updateUserUrl="$baseUrl/user/update-user";
 
@@ -42,8 +74,6 @@ class ApiUrl{
 
   String submitTransactionWithOtpURL="$baseUrl/transaction-change/submit-otp";
 
-  String getHistoriqueTransaction="https://xakfjbfsigtjibefcpgc.supabase.co/rest/v1/transactions?select=*&user_id=eq.41d07550-b58a-4fbc-87e1-5c490f8a854d&order=created_at.desc&offset=0&limit=5";
-
   String getAllHistoriqueTransaction="$baseUrl/transaction-change/all";
 
   String getTransactionStatus="$baseUrl/transaction-change";
@@ -61,8 +91,6 @@ class ApiUrl{
   String createWallet="$baseUrl/wallet/create";
 
   String getSenChangeWallet="$baseUrl/wallet/back-office/type";
-
-  String getListWallet="$baseUrl/wallet/list";
 
   String archiveWallet="$baseUrl/wallet/change-state";
 
@@ -97,32 +125,6 @@ class ApiUrl{
   String waveLink="https://pay.wave.com/m/M_sn_b7DX1A4PwOfs/c/sn/";
 
   String waveLinkAvant="https://pay.wave.com/m/M_poOCEum2faE3";
-
-  //modou
-
-  String signup="$baseUrl/auth/v1/signup";
-
-  String login="$baseUrl/auth/v1/token?grant_type=password";
-
-  String logout="$baseUrl/auth/v1/logout";
-
-  String buy="$baseUrl/buy";
-
-  String sell="$baseUrl/sell";
-
-  String transaction="$baseUrl/transactions";
-
-  String exchangeRate="$baseUrl/exchange_rates";
-
-  String paymentMethods="$baseUrl/payment_methods";
-
-  String blockchainTypes="$baseUrl/blockchain_types";
-
-  String senchangeWallets="$baseUrl/senchange_wallets";
-
-  String userWalletsAddresses="$baseUrl/wallet_addresses";
-
-  String profileUser="$baseUrl/profiles";
 
 
 

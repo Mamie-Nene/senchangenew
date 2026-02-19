@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/src/utils/consts/routes/app_routes_name.dart';
 import '/src/presentation/widgets/app_utils.dart';
 
@@ -105,7 +106,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
               const SizedBox(height: 24),
 
               /// Montant CFA
-              _AmountField(
+              amountField(
                 hint: "0",
                 label: "Montant en CFA",
                 suffix: "CFA",
@@ -130,7 +131,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
               const SizedBox(height: 16),
 
               /// Montant USDT
-              _AmountField(
+              amountField(
                 hint: "0.00",
                 label: "Montant en USDT",
                 suffix: "USDT",
@@ -153,7 +154,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
               Row(
                 children: [
                   Expanded(
-                    child: PaymentMethodCard(
+                    child: AppUtilsWidget().paymentMethodCard(context,
                       label: "Wave",
                       imageUrl:
                       "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/59075c4f-9488-49fc-98c0-74cd58a3ee1d.png",
@@ -164,7 +165,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: PaymentMethodCard(
+                    child:AppUtilsWidget().paymentMethodCard(context,
                       label: "Orange Money",
                       imageUrl:
                       "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/5dc4224f-07f8-4888-bb18-d8a43f452fe5.png",
@@ -183,7 +184,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
 
               //const Text("Numéro de téléphone", style: TextStyle(color: Color(0xFF3D2A3A),)),
               const SizedBox(height: 8),
-              _InputField(
+              inputField(
                 hint: "Ex: 771234567",
                 keyboardType: TextInputType.phone, controller:phoneNumber,
               ),
@@ -203,10 +204,10 @@ class _AchatPageState extends State<AchatPageNewNew > {
                 spacing: 8,
                 runSpacing: 8,
                 children: [//selectedNetwork
-                  _NetworkChip(  title: "TRC20", subtitle: 'TRON (TRC20)', selected: selectedNetwork=="TRC20", onTap: () { onSelect("TRC20"); },),
-                  _NetworkChip( title: "ERC20", subtitle: 'Etherum (ERC20)', selected: selectedNetwork=="ERC20", onTap: () { onSelect("ERC20"); },),
-                  _NetworkChip(  title: "BEP20", subtitle: 'BNB (BEP20)', selected: selectedNetwork=="BEP20", onTap: () { onSelect("BEP20");  },),
-                  _NetworkChip(  title:"SOL", subtitle: 'Solona', selected: selectedNetwork=="SOL", onTap: () { onSelect("SOL");  },),
+                  networkChip(  title: "TRC20", subtitle: 'TRON (TRC20)', selected: selectedNetwork=="TRC20", onTap: () { onSelect("TRC20"); },),
+                  networkChip( title: "ERC20", subtitle: 'Etherum (ERC20)', selected: selectedNetwork=="ERC20", onTap: () { onSelect("ERC20"); },),
+                  networkChip(  title: "BEP20", subtitle: 'BNB (BEP20)', selected: selectedNetwork=="BEP20", onTap: () { onSelect("BEP20");  },),
+                  networkChip(  title:"SOL", subtitle: 'Solona', selected: selectedNetwork=="SOL", onTap: () { onSelect("SOL");  },),
                 ],
               ),
 //#e5e7eb
@@ -216,10 +217,11 @@ class _AchatPageState extends State<AchatPageNewNew > {
               const SizedBox(height: 8),
 
               /// Address
-              _InputField(
+              inputField(
                 hint: "wallet",
                // monospace: true,
-                controller:TextEditingController(text: "0x1e4dea1c6e464e620b287cbcb1372e2a6f7ae5ad") ,
+                controller:TextEditingController(text: "0x1e4dea1c6e464e620b287cbcb1372e2a6f7ae5ad"),
+                keyboardType: null ,
               ),
 
               const SizedBox(height: 16),
@@ -336,25 +338,13 @@ class _AchatPageState extends State<AchatPageNewNew > {
     );
   }
 
-}
-
-
-
-class _AmountField extends StatelessWidget {
-  final String label;
-  final String suffix;
-  final String hint;
-  final TextEditingController controller;
-
-  const _AmountField({
-    required this.label,
-    required this.suffix,
-    required this.hint,
-    required this.controller, required bool highlighted,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  amountField  ({
+    required String label,
+    required String suffix,
+    required String hint,
+    required TextEditingController controller,
+    required bool highlighted,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -373,61 +363,13 @@ class _AmountField extends StatelessWidget {
         ),
       ],
     );
-  }
-}
+ }
 
-class PaymentMethodCard extends StatelessWidget {
-  final String label;
-  final String imageUrl;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const PaymentMethodCard({
-    required this.label,
-    required this.imageUrl,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    //,Theme.of(context).primaryColor
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: selected ?Theme.of(context).primaryColor.withOpacity(0.1):Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            width: 2,
-            color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
-          ),
-        ),
-        child: Column(
-          children: [
-            Image.network(imageUrl, height: 40),
-            const SizedBox(height: 8),
-            Text(label),
-          ],
-        ),
-      ),
-    );
-  }
-}
-class _InputField extends StatelessWidget {
-  final String hint;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-
-  const _InputField({
-    required this.hint,
-    required this.controller,
-    this.keyboardType = TextInputType.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+   inputField  ({
+    required String hint,
+    required TextEditingController controller,
+    required TextInputType? keyboardType,
+  }) {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
@@ -438,65 +380,47 @@ class _InputField extends StatelessWidget {
         //fillColor: Color(0xffe3e2e3),
         hintText: hint,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14),
         ),
       ),
     );
   }
-}
-class _NetworkChip extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final bool selected;
-  final VoidCallback onTap;
 
-  const _NetworkChip({
-    required this.title,
-    required this.subtitle,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+   networkChip ({
+  required String title,
+  required String subtitle,
+  required bool selected,
+  required VoidCallback onTap,
+  }) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
-            width: 2,
-          ),
-          color: selected
-              ? Theme.of(context).primaryColor.withOpacity(0.1)
-              : Colors.white,
-        ),
-        child: Column(
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(subtitle, style: const TextStyle(fontSize: 12)),
-          ],
-        ),
-      ),
+    onTap: onTap,
+    child: Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(14),
+    border: Border.all(
+    color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
+    width: 2,
+    ),
+    color: selected
+    ? Theme.of(context).primaryColor.withOpacity(0.1)
+        : Colors.white,
+    ),
+    child: Column(
+    children: [
+    Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+    Text(subtitle, style: const TextStyle(fontSize: 12)),
+    ],
+    ),
+    ),
     );
-  }
-}
+    }
 
-class BuyUsdtButton extends StatelessWidget {
-  final bool disabled;
-  final VoidCallback? onPressed;
-
-  const BuyUsdtButton({
-    super.key,
-    required this.disabled,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    /*
+   BuyUsdtButton  ({
+  required bool disabled,
+  required VoidCallback? onPressed,
+  }) {
+  /*
     * SizedBox(
       height: 56,
       width: double.infinity,
@@ -514,76 +438,79 @@ class BuyUsdtButton extends StatelessWidget {
       ),
     );*/
     return SizedBox(
-      width: double.infinity,
-      height: 64,
-      child: Opacity(
-        opacity: disabled ? 0.5 : 1,
-        child: ElevatedButton(
-          onPressed: disabled ? null : onPressed,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ).copyWith(
-            backgroundColor: MaterialStateProperty.resolveWith(
-                  (_) => Colors.transparent,
-            ),
-          ),
-          child: Ink(
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xFF22C55E), // green-500
-                  Color(0xFF059669), // emerald-600
-                ],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF22C55E).withOpacity(0.3),
-                  blurRadius: 16,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Container(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.south_west,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    "Acheter USDT",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    width: double.infinity,
+    height: 64,
+    child: Opacity(
+    opacity: disabled ? 0.5 : 1,
+    child: ElevatedButton(
+    onPressed: disabled ? null : onPressed,
+    style: ElevatedButton.styleFrom(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    elevation: 0,
+    backgroundColor: Colors.transparent,
+    shadowColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    ),
+    ).copyWith(
+    backgroundColor: MaterialStateProperty.resolveWith(
+    (_) => Colors.transparent,
+    ),
+    ),
+    child: Ink(
+    decoration: BoxDecoration(
+    gradient: const LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+    Color(0xFF22C55E), // green-500
+    Color(0xFF059669), // emerald-600
+    ],
+    ),
+    borderRadius: BorderRadius.circular(20),
+    boxShadow: [
+    BoxShadow(
+    color: const Color(0xFF22C55E).withOpacity(0.3),
+    blurRadius: 16,
+    offset: const Offset(0, 8),
+    ),
+    ],
+    ),
+    child: Container(
+    alignment: Alignment.center,
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: const [
+    Icon(
+    Icons.south_west,
+    size: 20,
+    color: Colors.white,
+    ),
+    SizedBox(width: 8),
+    Text(
+    "Acheter USDT",
+    style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+    ),
+    ),
+    SizedBox(width: 8),
+    Icon(
+    Icons.arrow_forward_rounded,
+    size: 20,
+    color: Colors.white,
+    ),
+    ],
+    ),
+    ),
+    ),
+    ),
+    ),
     );
   }
+
 }
+
+
 

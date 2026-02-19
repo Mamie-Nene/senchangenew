@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
           locale: DevicePreview.locale(context), // OP*/
 
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: AppColors.orangeColor),
+              colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainAppColor),
               fontFamily: 'Inter',
             ),
             navigatorKey: navigatorKey, // <-- clé globale
