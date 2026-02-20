@@ -346,11 +346,12 @@ class AppUtilsWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: selected ?Theme.of(context).primaryColor.withOpacity(0.1):Colors.white,
+          color: selected ?AppColors.secondAppColor.withOpacity(0.1):Colors.white,
+         // color: selected ?Theme.of(context).primaryColor.withOpacity(0.1):Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             width: 2,
-            color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
+            color: selected ? AppColors.secondAppColor : Theme.of(context).dividerColor
           ),
         ),
         child: Column(
@@ -361,6 +362,31 @@ class AppUtilsWidget {
           ],
         ),
       ),
+    );
+  }
+  rateRow (BuildContext context, {
+    required String label,
+    required String value,
+    bool muted = false,
+    bool small= false,
+  }){
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: muted
+                  ? Colors.grey
+                  : theme.colorScheme.onBackground.withOpacity(0.7),
+            )
+        ),
+        Text(value,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontFamily: 'monospace',
+            )
+        ),
+      ],
     );
   }
 }

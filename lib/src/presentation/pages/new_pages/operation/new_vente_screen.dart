@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:senchange/src/presentation/pages/new_pages/operation/achat_new_new.dart';
-import 'package:senchange/src/presentation/widgets/app_utils.dart';
+import 'package:senchange/src/utils/consts/app_specifications/allDirectories.dart';
+import '/src/presentation/widgets/app_utils.dart';
 
 import '/src/utils/consts/routes/app_routes_name.dart';
 
@@ -17,6 +17,7 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
   String paymentMethod = 'wave';
   String network = 'SOL';
   String selectedPayment = 'wave';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,29 +25,27 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text(
+        title:  Text(
           "Vente",
           style: TextStyle(
-            color: Color(0xFF3D2A3A),
+            color: AppColors.mainAppTextColor,
             fontWeight: FontWeight.w700,
           ),
         ),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Color(0xFF3D2A3A)),
+        iconTheme:  IconThemeData(color: AppColors.mainAppTextColor),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Form(
-            child: Column(
+          child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'Vendez vos stablecoins et recevez le montant sur votre mobile money',
-                  style: TextStyle(color: Color(0xFF3D2A3A),),
+                  style: TextStyle(color: AppColors.mainAppTextColor,),
                 ),
-
-                const SizedBox(height: 24),
+                const SizedBox(height:12),
 
                 /// TRANSACTION TYPE
                 _label('Type de transaction'),
@@ -102,9 +101,9 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
+               Text(
                   'Montant minimum: 30 - Montant maximum: 1 500 000 USDT',
-                  style: TextStyle(fontSize: 12, color: Color(0xFF3D2A3A),),
+                  style: TextStyle(fontSize: 12, color: AppColors.mainAppTextColor,),
                 ),
 
                 const SizedBox(height: 24),
@@ -204,7 +203,6 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
 
               ],
             ),
-          ),
         ),
       ),
     );
@@ -217,12 +215,12 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
       children: [
         if (icon != null) Column(
           children: [
-            Icon(icon, size: 16, color: iconColor?? Color(0xFF3D2A3A),),
+            Icon(icon, size: 16, color: iconColor?? AppColors.mainAppTextColor,),
             const SizedBox(width: 30),
           ],
         ),
 
-        Text(text, style: const TextStyle(color: Color(0xFF3D2A3A),fontWeight: FontWeight.bold)),
+        Text(text, style: TextStyle(color: AppColors.mainAppTextColor,fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -231,12 +229,12 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
     return InputDecoration(
       hintText: hint,
       suffixIcon: suffix,
-        filled: true,
-        fillColor: Color(0xffECDCEC),//Colors.pink.shade50
+        // fillColor: Color(0xffECDCEC),//Colors.pink.shade50
 
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
     );
+
   }
 
   Widget _transactionButton({
@@ -270,7 +268,7 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xFF3D2A3A),)),
+                  Text(subtitle, style:  TextStyle(fontSize: 12, color: AppColors.mainAppTextColor,)),
                 ],
               ),
             ],
@@ -315,17 +313,18 @@ class _SellUsdtScreenState extends State<SellUsdtScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? Color(0xFFF6B300) : Colors.grey.shade300,
+            color: selected ? AppColors.secondAppColor : Colors.grey.shade300,
             width: 2,
           ),
-          color: selected ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
+          color: selected ? AppColors.secondAppColor.withOpacity(0.1) : null,
+          //color: selected ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(code, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 4),
-            Text(name, style: const TextStyle(fontSize: 12, color: Color(0xFF3D2A3A),)),
+            Text(name, style: TextStyle(fontSize: 12, color: AppColors.mainAppTextColor,)),
           ],
         ),
       ),

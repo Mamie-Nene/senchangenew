@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '/src/utils/consts/constants.dart';
+import '/src/utils/consts/app_specifications/allDirectories.dart';
 import '/src/utils/consts/routes/app_routes_name.dart';
 import '/src/presentation/widgets/app_utils.dart';
 
@@ -15,10 +18,15 @@ class _AchatPageState extends State<AchatPageNewNew > {
   String selectedNetwork = 'TRC20';
   String stableCoin = 'USDT';
 
-  TextEditingController montantCFA = TextEditingController();
-  TextEditingController montantUSDT = TextEditingController();
+  bool isDataInterverted=false;
+  TextEditingController inputController = TextEditingController();
+  TextEditingController outputController = TextEditingController();
+
   TextEditingController phoneNumber = TextEditingController();
 
+  double tauxAchat = 0.0018;
+
+  bool isTauxVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +49,23 @@ class _AchatPageState extends State<AchatPageNewNew > {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              const Text(
-                "Achetez des stablecoins avec votre mobile money",
-                style: TextStyle(color: Color(0xFF3D2A3A),),
+              Text("Achetez des stablecoins avec votre mobile money",
+                 style: TextStyle(color: AppColors.mainAppTextColor,),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height:12),
 
-              /// Transaction type
-              const Text(
+              Text(
                 "Type de transaction",
-                style: TextStyle(color: Color(0xFF3D2A3A),fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.mainAppTextColor,fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Row(
+                spacing: 12,
                 children: [
                   Expanded(
                     child: AppUtilsWidget().transactionTypeCard(
@@ -73,7 +79,6 @@ class _AchatPageState extends State<AchatPageNewNew > {
                       onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutesName.acheterPage) ,
                     ),
                   ),
-                  const SizedBox(width: 12),
                   Expanded(
                     child: AppUtilsWidget().transactionTypeCard(
                       context,
@@ -88,10 +93,8 @@ class _AchatPageState extends State<AchatPageNewNew > {
                   ),
                 ],
               ),
-
               const SizedBox(height: 24),
 
-              /// STABLECOIN
               _label('Stablecoin'),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
@@ -105,26 +108,39 @@ class _AchatPageState extends State<AchatPageNewNew > {
               ),
               const SizedBox(height: 24),
 
-              /// Montant CFA
               amountField(
                 hint: "0",
                 label: "Montant en CFA",
                 suffix: "CFA",
                 highlighted: false,
-                controller: montantCFA,
+                readOnlyActivated: false,
+                controller: inputController,
+                onTap: (){
+                  setState(() {
+                    isTauxVisible = true;
+                    outputController.text = inputController.text * tauxAchat.toInt();
+                  });
+                }
               ),
 
               const SizedBox(height: 16),
 
-              /// Inverser
               Center(
                 child: TextButton.icon(
                   style: TextButton.styleFrom(//e5e7eb
-                      backgroundColor: Color(0xffECDCEC),
+                      backgroundColor: AppColors.secondAppColor.withOpacity(0.1)
+                    // backgroundColor: theme.cardColor,//Color(0xffECDCEC)
                   ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.swap_vert),
-                  label: const Text("Inverser"),
+                  onPressed: () {
+                    setState(() {
+                    final tempCFA = inputController.text;
+                    final tempUSDT = outputController.text;
+                    inputController.text = tempUSDT;
+                    outputController.text = tempCFA;
+                  });},
+                  icon:  Icon(Icons.swap_vert,color:  AppColors.secondAppColor),
+                  // label:  Text("Inverser"),
+                label:  Text("Inverser",style: TextStyle(color: AppColors.secondAppColor),),
                 ),
               ),
 
@@ -135,29 +151,66 @@ class _AchatPageState extends State<AchatPageNewNew > {
                 hint: "0.00",
                 label: "Montant en USDT",
                 suffix: "USDT",
-                controller: montantUSDT,
+                controller: outputController,
+                readOnlyActivated: true,
                 highlighted: true,
+                onTap: null
               ),
 
               const SizedBox(height: 8),
-              const Text(
+               Text(
                 "Limites: 10 000 - 1 500 000 CFA",
-                style: TextStyle(fontSize: 12, color: Color(0xFF3D2A3A),),
+                style: TextStyle(fontSize: 12, color: AppColors.mainAppTextColor,),
               ),
 
               const SizedBox(height: 24),
+              Visibility(
+                visible: isTauxVisible,
+                child:Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer
+                      .withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    rateRow(context,
+                      label: 'Frais(1%)',
+                      value: '1.0%',
+                    //  value: "${(selectedPair!.spread * 100).toStringAsFixed(2)}%",
 
+                    ),
+                    const SizedBox(height: 8),
+                    rateRow(context,
+                      label: 'Frais réseau $selectedNetwork',
+                     // value: selectedPair!.formattedRate,
+                       value: '',
+                    ),
+                    const Divider(height: 24),
+                    rateRow(context,
+                      label: 'Total',
+                      value: outputController.text,
+                      small: true,
+                      isTotal: true,
+                      //value: '14:46:43',
+
+                    ),
+                  ],
+                ),
+              ),
+              ),
+              const SizedBox(height: 24),
               /// Payment method
                _label('Moyen de paiement',icon: Icons.payment),
-             // const Text("Moyen de paiement", style: TextStyle(color: Color(0xFF3D2A3A),)),
+             // const Text("Moyen de paiement", style: TextStyle(color: AppColors.mainAppTextColor,)),
               const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
                     child: AppUtilsWidget().paymentMethodCard(context,
                       label: "Wave",
-                      imageUrl:
-                      "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/59075c4f-9488-49fc-98c0-74cd58a3ee1d.png",
+                      imageUrl:Constants.waveImageLink,
                       selected: selectedPayment == 'wave',
                       onTap: () =>
                           setState(() => selectedPayment = 'wave'),
@@ -167,8 +220,7 @@ class _AchatPageState extends State<AchatPageNewNew > {
                   Expanded(
                     child:AppUtilsWidget().paymentMethodCard(context,
                       label: "Orange Money",
-                      imageUrl:
-                      "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/5dc4224f-07f8-4888-bb18-d8a43f452fe5.png",
+                      imageUrl: Constants.omImageLink,
                       selected: selectedPayment == 'orange',
                       onTap: () =>
                           setState(() => selectedPayment = 'orange'),
@@ -182,10 +234,10 @@ class _AchatPageState extends State<AchatPageNewNew > {
               /// Phone
               _label('Numéro de téléphone',icon: Icons.phone),
 
-              //const Text("Numéro de téléphone", style: TextStyle(color: Color(0xFF3D2A3A),)),
+              //const Text("Numéro de téléphone", style: TextStyle(color: AppColors.mainAppTextColor,)),
               const SizedBox(height: 8),
               inputField(
-                hint: "Ex: 771234567",
+                hint: "Ex: 770000000",
                 keyboardType: TextInputType.phone, controller:phoneNumber,
               ),
 
@@ -271,6 +323,32 @@ class _AchatPageState extends State<AchatPageNewNew > {
       ),
     );
   }
+
+  rateRow (BuildContext context, {
+    required String label,
+    required String value,
+    bool isTotal = false,
+    bool small= false,
+  }){
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight:  isTotal?FontWeight.bold:null,
+              color:theme.colorScheme.onBackground.withOpacity(0.7),
+            )
+        ),
+        Text(value,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight:  isTotal?FontWeight.bold:null,
+              fontFamily: 'monospace',
+            )
+        ),
+      ],
+    );
+  }
   InputDecoration _inputDecoration({String? hint, Widget? suffix}) {
     return InputDecoration(
       hintText: hint,
@@ -282,58 +360,19 @@ class _AchatPageState extends State<AchatPageNewNew > {
   void onSelect(String value) {
     setState(() => selectedNetwork = value);
   }
-  Widget _transactionButton({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool selected,
-    required VoidCallback onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: selected ? Colors.pink : Color(0xFF3D2A3A),//.shade300,
-              width: 2,
-            ),
-            color: selected ? Colors.pink.shade50 : null,
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: selected ? Colors.pink : Color(0xFF3D2A3A),//.shade200,
-                child: Icon(icon, color: selected ? Colors.white : Color(0xFF3D2A3A)),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xFF3D2A3A),)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+
 
   Widget _label(String text, {IconData? icon, Color? iconColor}) {
     return Row(
       children: [
         if (icon != null) Column(
           children: [
-            Icon(icon, size: 16, color: iconColor?? Color(0xFF3D2A3A),),
+            Icon(icon, size: 16, color: iconColor?? AppColors.mainAppTextColor,),
             const SizedBox(width: 30),
           ],
         ),
 
-        Text(text, style: const TextStyle(color: Color(0xFF3D2A3A),fontWeight: FontWeight.bold,fontSize: 16)),
+        Text(text, style:  TextStyle(color: AppColors.mainAppTextColor,fontWeight: FontWeight.bold,fontSize: 16)),
       ],
     );
   }
@@ -341,18 +380,31 @@ class _AchatPageState extends State<AchatPageNewNew > {
   amountField  ({
     required String label,
     required String suffix,
+    required bool readOnlyActivated,
     required String hint,
     required TextEditingController controller,
     required bool highlighted,
+    required VoidCallback? onTap,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(height: 6),
-        TextField(
+        TextFormField(
+          onTap: onTap,
+          readOnly: readOnlyActivated,
           controller: controller,
           keyboardType: TextInputType.number,
+          //inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
+          inputFormatters:[FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Veuillez remplir ce champs';
+            }
+            return null;
+          },
           decoration: InputDecoration(
             hint: Text(hint),
             suffixText: suffix,
@@ -370,13 +422,21 @@ class _AchatPageState extends State<AchatPageNewNew > {
     required TextEditingController controller,
     required TextInputType? keyboardType,
   }) {
-    return TextField(
+    return TextFormField(
+
       controller: controller,
       keyboardType: keyboardType,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Veuillez remplir ce champs';
+        }
+        return null;
+      },
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Color(0xffECDCEC),
-        //fillColor: Color(0xffecdcec),
+       // filled: true,
+       // fillColor: Theme.of(context).cardColor,
+        //fillColor: Color(0xffECDCEC),
         //fillColor: Color(0xffe3e2e3),
         hintText: hint,
         border: OutlineInputBorder(
@@ -387,33 +447,33 @@ class _AchatPageState extends State<AchatPageNewNew > {
   }
 
    networkChip ({
-  required String title,
-  required String subtitle,
-  required bool selected,
-  required VoidCallback onTap,
-  }) {
+    required String title,
+    required String subtitle,
+    required bool selected,
+    required VoidCallback onTap,
+   }) {
     return GestureDetector(
-    onTap: onTap,
-    child: Container(
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(14),
-    border: Border.all(
-    color: selected ? Color(0xFFF6B300) : Color(0xFF3D2A3A),
-    width: 2,
-    ),
-    color: selected
-    ? Theme.of(context).primaryColor.withOpacity(0.1)
-        : Colors.white,
-    ),
-    child: Column(
-    children: [
-    Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-    Text(subtitle, style: const TextStyle(fontSize: 12)),
-    ],
-    ),
-    ),
-    );
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: selected ? AppColors.secondAppColor : Theme.of(context).dividerColor,
+            width: 2,
+          ),
+          color: selected
+          ? AppColors.secondAppColor.withOpacity(0.1)
+              : Colors.white,
+          ),
+        child: Column(
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(subtitle, style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+        ),
+      );
     }
 
    BuyUsdtButton  ({

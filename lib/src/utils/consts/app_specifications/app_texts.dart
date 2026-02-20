@@ -25,6 +25,7 @@ class AppText{
   // ------------------- SETTINGS TEXTS ---------------
 
   static const FORGET_PWD_TEXT= 'Mot de passe oublié ?';
+
   static const FORGET_PWD_SUBTITLE_TEXT= 'Entrez votre email ou numéro de téléphone pour recevoir les instructions de réinitialisation.';
 
   static const PWD_LENGHT_INFERIOR_CHECK_TEXT= 'Le mot de passe doit contenir au moins 8 caratères';
@@ -51,4 +52,8 @@ class AppText{
   static const String APP_VERSION  = "Version : 1.0.6";
 
   static const String TITLE_INVOICE_TEXT = 'Reçu de paiement';
+
+  static const String ACHAT_TITLE_TEXT = "Achetez des stablecoins avec votre mobile money";
+
+  static const String VENDRE_TITLE_TEXT = 'Vendez vos stablecoins et recevez le montant sur votre mobile money';
 }

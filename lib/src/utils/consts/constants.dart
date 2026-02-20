@@ -21,4 +21,8 @@ class Constants {
   static const String whatsappSupportMsg = "Salut, j’utilise votre application Senchange et j’aurais besoin d’échanger avec le support. Merci !";
   static const String statutTransactionEnCours = "WAITING_OTP";
 
+  // new
+  static const String waveImageLink = "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/59075c4f-9488-49fc-98c0-74cd58a3ee1d.png";
+  static const String omImageLink = "https://xakfjbfsigtjibefcpgc.supabase.co/storage/v1/object/public/payment-logos/logos/5dc4224f-07f8-4888-bb18-d8a43f452fe5.png";
+
 }

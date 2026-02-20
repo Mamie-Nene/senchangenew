@@ -13,7 +13,8 @@ class OperationCardLocalData{
       secondGradientColor: Color(0xFFFACC15), // yellow-400
       boxIconColor:  Color(0xFFF59E0B).withOpacity(0.8), // yellow-500/80
       iconColor: const Color(0xFF78350F), // yellow-900,
-      route:AppRoutesName.acheterPage
+      route:AppRoutesName.buyOrSellPage
+      //route:AppRoutesName.acheterPage
     ),
     ActionButton(
       icon: Icons.local_offer_outlined,
@@ -22,7 +23,8 @@ class OperationCardLocalData{
       secondGradientColor: Color(0xFFF9A8D4), // pink-300
       boxIconColor: const Color(0xFFF472B6).withOpacity(0.8), // pink-400/80,
       iconColor: const Color(0xFF9D174D), // pink-800,
-      route:AppRoutesName.vendrePage
+      route:AppRoutesName.buyOrSellPage
+      //   route:AppRoutesName.vendrePage
     ),
     ActionButton(
       icon: Icons.refresh,

@@ -8,6 +8,7 @@ import 'package:senchange/src/presentation/pages/new_pages/auth/new_profile.dart
 import 'package:senchange/src/presentation/pages/new_pages/auth/new_signup.dart';
 import 'package:senchange/src/presentation/pages/new_pages/home_pages/splash_screen.dart';
 import 'package:senchange/src/presentation/pages/new_pages/operation/achat_new_new.dart';
+import 'package:senchange/src/presentation/pages/new_pages/operation/buy_or_sell_page.dart';
 import 'package:senchange/src/presentation/pages/new_pages/operation/currency_exchange.dart';
 import 'package:senchange/src/presentation/pages/new_pages/operation/new_vente_screen.dart';
 
@@ -132,6 +133,9 @@ class RouteGenerator {
         return MaterialPageRoute( builder: (context) => const AddMobileMoneyAccount());
 
     //   --------------------  Operations Pages ------------------------------
+
+      case AppRoutesName.buyOrSellPage:
+        return MaterialPageRoute(  builder: (context) =>  BuyOrSellPage());
 
       case AppRoutesName.acheterPage:
         return MaterialPageRoute(  builder: (context) =>  AchatPageNewNew());

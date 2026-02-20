@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:senchange/src/presentation/widgets/app_utils.dart';
 
 import '/src/data/local/operation_card_data.dart';
 
 import '/src/data/remote/currency_exchange.dart';
 import '/src/domain/CurrencyExchange.dart';
 import '/src/utils/consts/app_specifications/allDirectories.dart';
-
 
 
 class CurrencyConverterPage extends StatefulWidget {
@@ -20,22 +20,23 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
   List<CurrencyExchange> currency = [];
   bool isLoading = true;
 
-  bool isSelected=true;
+  bool isDataInterverted=false;
+
  TextEditingController inputController = TextEditingController();
  TextEditingController outputController = TextEditingController();
 
  int indexChangeSelected = 0;
 
-  List<CurrencyPair> pairs = [];
+ List<CurrencyPair> pairs = [];
 
-   CurrencyPair? selectedPair;
+ CurrencyPair? selectedPair;
 
   String selectedFrom = "USD";
   String selectedTo = "XOF";
   String selectedFromFlag = "🇺🇸";
   String selectedToFlag = "🇸🇳";
-  String rateFrom = "1";
-  String rateTo = "554,39";
+  double rateTo = 0.0018;
+  double rateFrom = 1;
 
 
   /*getListCurrency(BuildContext context,) async {
@@ -83,11 +84,13 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
     selectedTo = selectedPair!.toCode;
     selectedFromFlag = selectedPair!.fromFlag;
     selectedToFlag = selectedPair!.toFlag;
+    rateTo = selectedPair!.rate;
 
     _convert();
   }
 
   void _convert() {
+
     final input = double.tryParse(inputController.text);
     if (input == null) {
       outputController.text = "";
@@ -100,7 +103,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
 
   @override
   void initState() {
-
+    isDataInterverted=false;
   getListCurrency(context);
 
   inputController.addListener(_convert);
@@ -254,7 +257,12 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                                     Expanded(
                                         child: currencyInput(context,
                                             label: 'De',
-                                            inputController: inputController
+                                            inputController: inputController,
+                                          onTap: () {
+                                            setState(() {
+                                              outputController.text = inputController.text*rateTo.toInt();
+                                            });
+                                          },
                                         )
                                     ),
                                     const SizedBox(width: 12),
@@ -266,12 +274,16 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                                         onPressed: () {
                                           final tempCode = selectedFrom;
                                           final tempFlag = selectedFromFlag;
+                                          final tempController = inputController.text;
                                           setState(() {
+                                            isDataInterverted=true;
                                             selectedFrom = selectedTo;
                                             selectedFromFlag = selectedToFlag;
 
                                             selectedTo = tempCode;
                                             selectedToFlag = tempFlag;
+                                            inputController.text=outputController.text;
+                                            outputController.text=tempController;
                                           });
 
 
@@ -304,20 +316,20 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      rateRow(context,
+                                      AppUtilsWidget().rateRow(context,
                                         label: 'Taux de change',
                                         value: selectedPair!.formattedRate,
                                         // value: '$rateFrom $selectedFrom = $rateTo $selectedTo',
                                       ),
                                       const SizedBox(height: 8),
-                                      rateRow(context,
+                                      AppUtilsWidget().rateRow(context,
                                         label: 'Frais de service',
                                         // value: '1.0%',
                                         value: "${(selectedPair!.spread * 100).toStringAsFixed(2)}%",
                                         muted: true,
                                       ),
                                       const Divider(height: 24),
-                                      rateRow(context,
+                                      AppUtilsWidget().rateRow(context,
                                         label: 'Dernière mise à jour',
                                         value: TimeOfDay.fromDateTime(selectedPair!.updatedAt)
                                             .format(context),
@@ -390,7 +402,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
     );
   }
 
- currencyInput(BuildContext context,{required String label,required TextEditingController inputController}) {
+ currencyInput(BuildContext context,{required String label,required TextEditingController inputController,required VoidCallback onTap}) {
   final theme = Theme.of(context);
 
   return Column(
@@ -403,9 +415,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
       currencySelector(context,
         flag: selectedFromFlag,
         code: selectedFrom,
-        onTap: () {
-         // showCurrencyBottomSheet(isFrom: true);
-          },
+        onTap: onTap,
       ),
       const SizedBox(height: 6),
       TextField(
@@ -456,9 +466,10 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
         decoration: InputDecoration(
           hintText: '0.00',
           filled: true,
-          fillColor: theme.colorScheme.surfaceContainer
-              .withOpacity(0.4),
-          border: const OutlineInputBorder(
+          fillColor: AppColors.secondAppColor
+              .withOpacity(0.2),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.secondAppColor),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
@@ -499,32 +510,6 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
       ),
       ),
   );
-  }
-
-  rateRow (BuildContext context, {
-    required String label,
-    required String value,
-    bool muted = false,
-    bool small= false,
-  }){
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: muted
-          ? Colors.grey
-              : theme.colorScheme.onBackground.withOpacity(0.7),
-          )
-        ),
-        Text(value,
-          style: theme.textTheme.bodySmall?.copyWith(
-          fontFamily: 'monospace',
-          )
-        ),
-      ],
-    );
   }
 
   rateTile(BuildContext context,{

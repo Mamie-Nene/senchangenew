@@ -44,6 +44,8 @@ class AppRoutesName{
 
   // ----------------------- Transaction Pages ------------------------
 
+  static const String buyOrSellPage = '/buyOrSellPage';
+
   static const String venteDetailsPage = '/venteDetailsPage';
   static const String achatDetailsPage = '/achatDetailsPage';
 
