@@ -9,10 +9,10 @@ part of 'CurrencyExchange.dart';
 CurrencyExchange _$CurrencyExchangeFromJson(Map<String, dynamic> json) => CurrencyExchange(
 
       json['id'] as String,
-      json['fromCurrency'] as String,
-      json['toCurrency'] as String,
-       json['rate'] as String,
-      json['spread_percentage'] as String,
+      json['from_currency'] as String,
+      json['to_currency'] as String,
+       json['rate'] as double,
+      json['spread_percentage'] as double,
        json['updated_at'] as String,
        json['is_active'] as bool,
 

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/src/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/intercepted_http.dart';
+
 import '/src/utils/variable/http_headers_global_variable.dart';
-
 import '/src/domain/UserEntity.dart';
-
-import '/src/services/secure_storage_service.dart';
 import '/src/services/utils.service.dart';
 import '/src/services/token_interceptor.dart';
 

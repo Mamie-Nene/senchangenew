@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '/src/data/local/operation_card_data.dart';
+
 import '/src/data/remote/currency_exchange.dart';
 import '/src/domain/CurrencyExchange.dart';
 import '/src/utils/consts/app_specifications/allDirectories.dart';
+
+
 
 class CurrencyConverterPage extends StatefulWidget {
   const CurrencyConverterPage({super.key});
@@ -21,20 +25,10 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
  TextEditingController outputController = TextEditingController();
 
  int indexChangeSelected = 0;
-/*List<Currency> currencies = [
-  Currency('🇸🇳', 'XOF'),
-  Currency('🇺🇸', 'USD'),
-  Currency('💵', 'USDT'),
-  Currency('💲', 'USDC'),
-];
 
-late Currency fromCurrency;
-late Currency toCurrency; fromCurrency = currencies[0];
-toCurrency = currencies[1];*/
+  List<CurrencyPair> pairs = [];
 
-  late List<CurrencyPair> pairs;
-
-  late CurrencyPair selectedPair;
+   CurrencyPair? selectedPair;
 
   String selectedFrom = "USD";
   String selectedTo = "XOF";
@@ -44,7 +38,7 @@ toCurrency = currencies[1];*/
   String rateTo = "554,39";
 
 
-  getListCurrency(BuildContext context,) async {
+  /*getListCurrency(BuildContext context,) async {
     await CurrencyExchangeApi().getListCurrency(context).then((value) {
       setState(() {
         currency = value;
@@ -56,14 +50,63 @@ toCurrency = currencies[1];*/
       });
     });
   }
+*/
+  getListCurrency(BuildContext context) async {
+     await CurrencyExchangeApi().getListCurrency(context).then(
+        (value){
+          setState(() {
+            isLoading = false;
+            pairs = value
+                .where((e) => e.is_active == true)
+                .map((e) => CurrencyPair(
+              fromCode: e.from_currency,
+              toCode: e.to_currency,
+              rate: e.rate,
+              spread: e.spread_percentage,
+              updatedAt: DateTime.parse(e.updated_at),
+            )
+            ).toList();
 
+            selectedPair = pairs.first;
 
+            _applySelectedPair();
 
-@override
+          });
+
+        }).onError((error, stackTrace) {
+          setState(() {isLoading = false;});
+        });
+  }
+
+  void _applySelectedPair() {
+    selectedFrom = selectedPair!.fromCode;
+    selectedTo = selectedPair!.toCode;
+    selectedFromFlag = selectedPair!.fromFlag;
+    selectedToFlag = selectedPair!.toFlag;
+
+    _convert();
+  }
+
+  void _convert() {
+    final input = double.tryParse(inputController.text);
+    if (input == null) {
+      outputController.text = "";
+      return;
+    }
+
+    final result = input * selectedPair!.rate;
+    outputController.text = result.toStringAsFixed(2);
+  }
+
+  @override
   void initState() {
+
   getListCurrency(context);
+
+  inputController.addListener(_convert);
+
   indexChangeSelected= 0;
-  pairs = [
+  /*pairs = [
     CurrencyPair(fromFlag: "🇸🇳", fromCode: "XOF", toFlag: "💲", toCode: "USDC", rate: "1 = 0,002 "),
     CurrencyPair(fromFlag: "🇸🇳", fromCode: "XOF", toFlag: "🇺🇸", toCode: "USD", rate: "1 = 0,002 "),
     CurrencyPair(fromFlag: "🇸🇳", fromCode: "XOF", toFlag: "💵", toCode: "USDT", rate: "1 = 0,002 "),
@@ -82,7 +125,7 @@ toCurrency = currencies[1];*/
   rateFrom = selectedPair.rate.substring(0,2);
 
   rateTo = selectedPair.rate.substring(4,10);
-
+*/
     super.initState();
   }
 
@@ -134,180 +177,211 @@ toCurrency = currencies[1];*/
                   color: theme.colorScheme.onBackground.withOpacity(0.6),
                 ),
               ),
-
-              /// Converter Card
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: theme.dividerColor),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                    )
-                  ],
-                ),
-                child: Column(
+              isLoading?
+              const Center(child: CircularProgressIndicator())
+                  :
+              pairs.isEmpty?
+              const Center(child: Text("Pas de données"))
+                  :
+              Column(
+                spacing: 16,
                   children: [
-                    /// Card Header
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    /// Converter Card
+                    Container(
+                      decoration: BoxDecoration(
+                        color: theme.cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: theme.dividerColor),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 20,
+                          )
+                        ],
+                      ),
+                      child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Icon(Icons.trending_up,
-                                  color: AppColors.secondAppColor),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Convertir',
-                                style: theme.textTheme.titleLarge
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          TextButton.icon(
-                            onPressed: () {
+                          /// Card Header
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.trending_up,
+                                        color: AppColors.secondAppColor),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Convertir',
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                TextButton.icon(
+                                  onPressed: ()async {
+                                    setState(() => isLoading = true);
+                                    await getListCurrency(context);
+                                  },
+                                  /* onPressed: () {
                               setState(() {
                                 indexChangeSelected=0;
                                 selectedFrom = selectedPair.fromCode;
                                 selectedTo = selectedPair.toCode;
                                 selectedFromFlag = selectedPair.fromFlag;
                                 selectedToFlag = selectedPair.toFlag;
-                                rateFrom = selectedPair.rate.substring(0,2);
-                                rateTo = selectedPair.rate.substring(4,10);
+                                rateFrom = selectedPair.formattedRate;
+                               // rateTo = selectedPair.rate;
                               });
-                              },
-                            icon: const Icon(Icons.refresh, size: 18),
-                            label: const Text('Actualiser'),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    /// Inputs
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      child: Column(
-                        spacing: 16,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Expanded(
-                                  child: currencyInput(context,
-                                      label: 'De',
-                                      inputController: inputController
-                                  )
-                              ),
-                              const SizedBox(width: 12),
-
-                              /// Swap
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: IconButton(
-                                  onPressed: () {
-                                    final tempCode = selectedFrom;
-                                    final tempFlag = selectedFromFlag;
-                                    setState(() {
-                                      selectedFrom = selectedTo;
-                                      selectedFromFlag = selectedToFlag;
-
-                                      selectedTo = tempCode;
-                                      selectedToFlag = tempFlag;
-                                    });
-
-
-                                  },
-                                  icon: Icon(Icons.swap_horiz,
-                                      color: AppColors.secondAppColor),
-                                  style: IconButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    side: BorderSide(
-                                      color: AppColors.secondAppColor
-                                          .withOpacity(0.5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(width: 12),
-                              Expanded(child: currencyOutput(context,label: 'Vers',outputController:outputController)),
-                            ],
-                          ),
-                          /// Rate Box
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceContainer
-                                  .withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(12),
-                              border:
-                              Border.all(color: theme.dividerColor),
-                            ),
-                            child: Column(
-                              children: [
-                                rateRow(context,
-                                  label: 'Taux de change',
-                                  value: '$rateFrom $selectedFrom = $rateTo $selectedTo',
-                                ),
-                                const SizedBox(height: 8),
-                                rateRow(context,
-                                  label: 'Frais de service',
-                                  value: '1.0%',
-                                  muted: true,
-                                ),
-                                const Divider(height: 24),
-                                rateRow(context,
-                                  label: 'Dernière mise à jour',
-                                  value: '14:46:43',
-                                  small: true,
+                              },*/
+                                  icon: const Icon(Icons.refresh, size: 18),
+                                  label: const Text('Actualiser'),
                                 ),
                               ],
                             ),
                           ),
+
+                          /// Inputs
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                            child: Column(
+                              spacing: 16,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                        child: currencyInput(context,
+                                            label: 'De',
+                                            inputController: inputController
+                                        )
+                                    ),
+                                    const SizedBox(width: 12),
+
+                                    /// Swap
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          final tempCode = selectedFrom;
+                                          final tempFlag = selectedFromFlag;
+                                          setState(() {
+                                            selectedFrom = selectedTo;
+                                            selectedFromFlag = selectedToFlag;
+
+                                            selectedTo = tempCode;
+                                            selectedToFlag = tempFlag;
+                                          });
+
+
+                                        },
+                                        icon: Icon(Icons.swap_horiz,
+                                            color: AppColors.secondAppColor),
+                                        style: IconButton.styleFrom(
+                                          shape: const CircleBorder(),
+                                          side: BorderSide(
+                                            color: AppColors.secondAppColor
+                                                .withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 12),
+                                    Expanded(child: currencyOutput(context,label: 'Vers',outputController:outputController)),
+                                  ],
+                                ),
+                                /// Rate Box
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.surfaceContainer
+                                        .withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border:
+                                    Border.all(color: theme.dividerColor),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      rateRow(context,
+                                        label: 'Taux de change',
+                                        value: selectedPair!.formattedRate,
+                                        // value: '$rateFrom $selectedFrom = $rateTo $selectedTo',
+                                      ),
+                                      const SizedBox(height: 8),
+                                      rateRow(context,
+                                        label: 'Frais de service',
+                                        // value: '1.0%',
+                                        value: "${(selectedPair!.spread * 100).toStringAsFixed(2)}%",
+                                        muted: true,
+                                      ),
+                                      const Divider(height: 24),
+                                      rateRow(context,
+                                        label: 'Dernière mise à jour',
+                                        value: TimeOfDay.fromDateTime(selectedPair!.updatedAt)
+                                            .format(context),
+                                        small: true,
+                                        //value: '14:46:43',
+
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
 
-              Text(
-                'Taux disponibles',
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
-              ),
+                    Text(
+                      'Taux disponibles',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                    ),
 
-              GridView.builder(
-                itemCount: pairs.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context,index) {
-                  final pair = pairs[index];
-                  return rateTile(
-                      context, pair: pair, selected: indexChangeSelected == index,
-                      action: (){
+                    GridView.builder(
+                      itemCount: pairs.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context,index) {
+                        final pair = pairs[index];
+                        return rateTile(
+                            context, pair: pair, selected: indexChangeSelected == index,
+                            action :(){
+                              selectedPair = pair;
+                              indexChangeSelected = index;
+                             setState(() {
+                               _applySelectedPair();
+                             });
+                            }
+                        );
+                        /*action: (){
                         setState(() {
                           indexChangeSelected = index;
                           selectedFrom = pair.fromCode;
                           selectedFromFlag = pair.fromFlag;
                           selectedTo = pair.toCode;
                           selectedToFlag = pair.toFlag;
-                          rateFrom = pair.rate.substring(0,2);
-                          rateTo = pair.rate.substring(4,10);
+                          rateFrom = pair.formattedRate;
+                          rateTo = pair.formattedRate;
 
                         });
-                    });
-                  },
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                   mainAxisSpacing: 12,
-                   crossAxisSpacing: 12,
-                   childAspectRatio: 2.3,
-                 ),
+                    });*/
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 12,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 2.3,
+                      ),
+                    ),
+
+
+
+                  ]
               ),
             ],
           ),
@@ -345,7 +419,7 @@ toCurrency = currencies[1];*/
           filled: true,
           fillColor: theme.colorScheme.surfaceContainer
        .withOpacity(0.4),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
@@ -384,7 +458,7 @@ toCurrency = currencies[1];*/
           filled: true,
           fillColor: theme.colorScheme.surfaceContainer
               .withOpacity(0.4),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         ),
@@ -455,17 +529,15 @@ toCurrency = currencies[1];*/
 
   rateTile(BuildContext context,{
     required CurrencyPair pair,
-     /* required String from,
-      required String to,
-      required String rate,*/
-      required bool selected,
-      required VoidCallback action
+    required bool selected,
+    required VoidCallback action
   }){
     final theme = Theme.of(context);
     return InkWell(
       onTap: action,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+       // padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           // color: selected ? theme.colorScheme.primary.withOpacity(0.1) : theme.cardColor,
@@ -482,7 +554,7 @@ toCurrency = currencies[1];*/
                 style: theme.textTheme.bodyMedium
                     ?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 6),
-            Text(pair.rate,
+            Text(pair.formattedRate,
                 style: theme.textTheme.bodySmall
                     ?.copyWith(fontFamily: 'monospace')),
           ],
@@ -493,25 +565,23 @@ toCurrency = currencies[1];*/
 
 }
 
-class Currency {
-  final String flag;
-  final String code;
-
-  Currency(this.flag, this.code);
-}
 class CurrencyPair {
-  final String fromFlag;
   final String fromCode;
-  final String toFlag;
   final String toCode;
-  final String rate;
+  final double rate;
+  final double spread;
+  final DateTime updatedAt;
 
   CurrencyPair({
-    required this.fromFlag,
     required this.fromCode,
-    required this.toFlag,
     required this.toCode,
     required this.rate,
+    required this.spread,
+    required this.updatedAt,
   });
-}
 
+  String get fromFlag => currencyFlags[fromCode] ?? "🏳️";
+  String get toFlag => currencyFlags[toCode] ?? "🏳️";
+
+  String get formattedRate => "1 $fromCode = ${rate.toStringAsFixed(4)} $toCode";
+}

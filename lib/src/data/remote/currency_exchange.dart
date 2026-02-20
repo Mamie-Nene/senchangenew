@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class CurrencyExchangeApi {
 
-  Future getListCurrency(BuildContext context) async {
+  Future<List<CurrencyExchange>> getListCurrency(BuildContext context) async {
 
     final url = Uri.parse(ApiUrl().getCurrencyExchangeList);
 
@@ -31,8 +31,6 @@ class CurrencyExchangeApi {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
 
-        if (response.body.isNotEmpty) {
-
           List responseData = jsonDecode(response.body);
 
           if( responseData.isEmpty) return currency;
@@ -40,21 +38,14 @@ class CurrencyExchangeApi {
           currency = responseData.map((e) => CurrencyExchange.fromJson(e)).toList();
 
           return currency;
-        }
-      }
-      else {
-        if (response.body.isNotEmpty) {
-          final responseData = jsonDecode(response.body);
-          if (!context.mounted) return ;
-          ResponseMessageService.showErrorToast(context, responseData["errorDTOS"][0]["errorMessage"],);
-        }
       }
     }
     catch (e) {
       debugPrint("-----------error------------ $e");
-      if (!context.mounted) return ;
+      if (!context.mounted)   return [] ;
       ResponseMessageService.showErrorToast(context, AppText.CATCH_ERROR_TEXT,);
     }
+    return [];
   }
 
 }

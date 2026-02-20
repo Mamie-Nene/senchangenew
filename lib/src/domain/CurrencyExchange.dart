@@ -7,10 +7,10 @@ part 'CurrencyExchange.g.dart';
 
 @JsonSerializable()
 class CurrencyExchange{
-////txHash
-  String id, from_currency, to_currency,rate,spread_percentage,updated_at;
-  bool is_active;
 
+  String id, from_currency, to_currency,updated_at;
+  double rate, spread_percentage;
+  bool is_active;
 
   CurrencyExchange(
          this.id,

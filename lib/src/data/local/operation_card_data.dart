@@ -64,4 +64,12 @@ class OperationCardLocalData{
     "typeTransaction": "ACHAT",
     "statusTransaction": "INIT",
   });
+
+
 }
+const currencyFlags = {
+  "XOF": "🇸🇳",
+  "USD": "🇺🇸",
+  "USDT": "💵",
+  "USDC": "💲",
+};
